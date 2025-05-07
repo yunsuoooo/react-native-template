@@ -1,4 +1,4 @@
-package com.rnclitest
+package com.reactNativeTemplate
 
 import android.app.Application
 import com.facebook.react.PackageList
