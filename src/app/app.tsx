@@ -6,7 +6,7 @@ import Navigation from './navigation';
 
 function App(): React.JSX.Element {
   return (
-    <SafeAreaProvider className="w-full">
+    <SafeAreaProvider className="flex-1">
       <Navigation />
     </SafeAreaProvider>
   );
