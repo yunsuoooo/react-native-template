@@ -4,6 +4,7 @@ import { DrawerContentComponentProps, DrawerItemList } from '@react-navigation/d
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { ROUTES } from '../../../app/navigation/routes';
+import { Icon } from '../icon';
 
 interface CustomDrawerContentProps extends DrawerContentComponentProps {}
 
@@ -30,8 +31,9 @@ const CustomDrawerContent = (props: CustomDrawerContentProps) => {
 
         {/* additional custom menu item */}
         <View className="px-2 mt-4">
-          <TouchableOpacity onPress={openSettingScreen}>
-            <Text className="text-sm font-semibold text-gray-500 ml-3 mb-2">설정</Text>
+          <TouchableOpacity className="ml-3 flex-row gap-2 items-center" onPress={openSettingScreen}>
+            <Icon name="settings" size={16} />
+            <Text className="text-sm font-semibold text-gray-500">설정</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

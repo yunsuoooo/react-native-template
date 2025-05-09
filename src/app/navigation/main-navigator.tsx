@@ -50,7 +50,6 @@ const Drawer = createDrawerNavigator();
 export const MainNavigator = () => {
   return (
     <Drawer.Navigator
-      defaultStatus="open"
       screenOptions={{
         headerShown: false,
         swipeEnabled: true, // 드로어 스와이프 가능

@@ -3,6 +3,7 @@ import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainDrawerParamList } from '../../../app/navigation/types';
+import { Icon } from '../icon';
 
 const Header = () => {
   const navigation = useNavigation<NativeStackNavigationProp<MainDrawerParamList>>();
@@ -19,13 +20,13 @@ const Header = () => {
     >
       <View className="flex-row w-full py-2 justify-between items-center">
         <TouchableOpacity onPress={handleOpenDrawer}>
-          <Text>menu</Text>
+          <Icon name="menu" size={24} className="text-zinc-600" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('HomeDrawer')}>
           <Text>home</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {}}>
-          <Text>noti</Text>
+          <Icon name="edit" size={20} className="text-zinc-600" />
         </TouchableOpacity>
       </View>
     </View>

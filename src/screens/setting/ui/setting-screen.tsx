@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Icon } from '../../../shared/ui/icon';
 
 const SettingScreen = () => {
   const navigation = useNavigation();
@@ -12,8 +13,8 @@ const SettingScreen = () => {
       <View className="flex-row p-4 justify-between items-center">
         <View className="w-4" />
         <Text className="text-center text-2xl">Settings</Text>
-        <TouchableOpacity className="w-4" onPress={() => navigation.goBack()}>
-          <Text>X</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="x" size={24} className="text-zinc-600" />
         </TouchableOpacity>
       </View>
       <View>
