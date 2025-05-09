@@ -58,6 +58,9 @@ export const WebViewScreen = () => {
         injectedJavaScript={injectedJavaScript}
         onMessage={handleWebViewMessage}
         startInLoadingState={true}
+        hideKeyboardAccessoryView
+        keyboardDisplayRequiresUserAction={false}
+        useWebView2
         renderLoading={() => (
           <ActivityIndicator
             className="absolute top-0 left-0 right-0 bottom-0 justify-center items-center"
