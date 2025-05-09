@@ -41,6 +41,7 @@ export type RootStackParamList = {
   [ROOT_ROUTES.MAIN]: undefined;
   [ROOT_ROUTES.AUTH]: undefined;
   [ROOT_ROUTES.SPLASH]?: undefined;
+  [ROOT_ROUTES.SETTING]: undefined;
 };
 
 // 중첩 네비게이션을 위한 통합 파라미터 타입

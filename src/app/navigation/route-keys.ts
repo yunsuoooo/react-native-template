@@ -25,12 +25,14 @@ export const WEBVIEW_STACK_ROUTES = {
 export const DRAWER_ROUTES = {
   HOME: 'HomeDrawer',
   WEBVIEW: 'WebViewDrawer',
+  SETTING: 'SettingDrawer',
 } as const;
 
 // 루트 스택 키 정의
 export const ROOT_ROUTES = {
   MAIN: 'Main',
   AUTH: 'Auth',
+  SETTING: 'Setting',
   SPLASH: 'Splash',
 } as const;
 

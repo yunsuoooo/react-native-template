@@ -5,6 +5,7 @@ import { ROUTES } from './routes';
 import { RootStackParamList } from './types';
 import MainNavigator from './main-navigator';
 import SplashScreen from '../../screens/splash/ui/splash-screen';
+import SettingNavigator from './setting-navigator';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -31,6 +32,7 @@ export const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name={ROUTES.ROOT.MAIN} component={MainNavigator} />
+      <Stack.Screen name={ROUTES.ROOT.SETTING} component={SettingNavigator} options={{ presentation: 'modal' }} />
     </Stack.Navigator>
   );
 };
