@@ -1,9 +1,21 @@
-import { HOME_STACK_ROUTES, AUTH_ROUTES, WEBVIEW_STACK_ROUTES, TAB_ROUTES, ROOT_ROUTES } from './route-keys';
+import {
+  HOME_STACK_ROUTES,
+  AUTH_ROUTES,
+  WEBVIEW_STACK_ROUTES,
+  DRAWER_ROUTES,
+  ROOT_ROUTES,
+  SETTING_STACK_ROUTES,
+} from './route-keys';
 
 // 홈 스택 파라미터 타입
 export type HomeStackParamList = {
   [HOME_STACK_ROUTES.MAIN]: undefined;
   [HOME_STACK_ROUTES.DETAIL]?: { id: string };
+};
+
+// 설정 스택 파라미터 타입
+export type SettingStackParamList = {
+  [SETTING_STACK_ROUTES.MAIN]: undefined;
 };
 
 // 인증 스택 파라미터 타입
@@ -18,10 +30,10 @@ export type WebViewStackParamList = {
   [WEBVIEW_STACK_ROUTES.MAIN]: { url: string };
 };
 
-// 탭 네비게이터 파라미터 타입
-export type MainTabParamList = {
-  [TAB_ROUTES.HOME]: undefined;
-  [TAB_ROUTES.WEBVIEW]: { url: string };
+// Drawer 네비게이터 파라미터 타입
+export type MainDrawerParamList = {
+  [DRAWER_ROUTES.HOME]: undefined;
+  [DRAWER_ROUTES.WEBVIEW]: { url: string };
 };
 
 // 루트 스택 파라미터 타입
@@ -33,7 +45,7 @@ export type RootStackParamList = {
 
 // 중첩 네비게이션을 위한 통합 파라미터 타입
 export type NavigatorParamList = RootStackParamList & {
-  [TAB_ROUTES.HOME]: undefined;
-  [TAB_ROUTES.WEBVIEW]: undefined;
+  HomeDrawer: undefined;
+  WebViewDrawer: undefined;
 } & HomeStackParamList &
   WebViewStackParamList;

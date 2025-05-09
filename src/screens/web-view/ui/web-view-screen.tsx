@@ -1,4 +1,4 @@
-import { View, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import { RouteProp, useRoute } from '@react-navigation/native';
@@ -69,14 +69,9 @@ export const WebViewScreen = () => {
   );
 };
 
-const deviceHeight = Dimensions.get('window').height;
-const deviceWidth = Dimensions.get('window').width;
-
 const styles = StyleSheet.create({
   webview: {
     flex: 1,
-    width: deviceWidth,
-    height: deviceHeight,
   },
 });
 

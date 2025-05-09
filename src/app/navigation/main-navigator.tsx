@@ -1,11 +1,12 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useRoute } from '@react-navigation/native';
-import { MainTabParamList, HomeStackParamList, WebViewStackParamList } from './types';
-import { HOME_STACK_ROUTES, WEBVIEW_STACK_ROUTES, TAB_ROUTES } from './route-keys';
+import { HomeStackParamList, WebViewStackParamList } from './types';
+import { HOME_STACK_ROUTES, WEBVIEW_STACK_ROUTES } from './route-keys';
+import { ROUTES } from './routes';
+import Header from '../../shared/ui/layout/header';
 import HomeScreen from '../../screens/home/ui/home-screen';
 import WebViewScreen from '../../screens/web-view/ui/web-view-screen';
-import TabBarIcon from '../../shared/ui/navigation/tab-bar-icon';
+import CustomDrawerContent from '../../shared/ui/navigation/custom-drawer-content';
 
 // 스택 네비게이터 정의
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -13,61 +14,54 @@ const WebViewStack = createNativeStackNavigator<WebViewStackParamList>();
 
 // 홈 스택 네비게이터
 const HomeNavigator = () => (
-  <HomeStack.Navigator>
-    <HomeStack.Screen name={HOME_STACK_ROUTES.MAIN} component={HomeScreen} options={{ headerShown: false }} />
+  <HomeStack.Navigator
+    screenOptions={{
+      header: () => {
+        return <Header />;
+      },
+    }}
+  >
+    <HomeStack.Screen name={HOME_STACK_ROUTES.MAIN} component={HomeScreen} />
   </HomeStack.Navigator>
 );
 
 // 웹뷰 스택 네비게이터
 const WebViewNavigator = () => {
-  const route = useRoute();
-  const params = (route.params as { url?: string }) || {};
-
   return (
-    <WebViewStack.Navigator>
+    <WebViewStack.Navigator
+      screenOptions={{
+        header: () => {
+          return <Header />;
+        },
+      }}
+    >
       <WebViewStack.Screen
         name={WEBVIEW_STACK_ROUTES.MAIN}
         component={WebViewScreen}
-        options={{ headerShown: false }}
-        initialParams={params}
+        initialParams={{ url: 'https://chatgpt.com' }}
       />
     </WebViewStack.Navigator>
   );
 };
 
-// 메인 탭 네비게이터
-const Tab = createBottomTabNavigator<MainTabParamList>();
-
-// TabBarIcon renderer function outside of component
-const getTabBarIcon = (route: string, color: string, size: number) => (
-  <TabBarIcon route={route} color={color} size={size} />
-);
+// 메인 드로어 네비게이터
+const Drawer = createDrawerNavigator();
 
 export const MainNavigator = () => {
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => getTabBarIcon(route.name, color, size),
-      })}
+    <Drawer.Navigator
+      defaultStatus="open"
+      screenOptions={{
+        headerShown: false,
+        swipeEnabled: true, // 드로어 스와이프 가능
+        drawerType: 'slide', // iOS/Android 모두 slide 방식
+        drawerStyle: { width: '85%' }, // 드로어 폭
+      }}
+      drawerContent={CustomDrawerContent}
     >
-      <Tab.Screen
-        name={TAB_ROUTES.HOME}
-        component={HomeNavigator}
-        options={{
-          title: '홈',
-          headerShown: false,
-        }}
-      />
-      <Tab.Screen
-        name={TAB_ROUTES.WEBVIEW}
-        component={WebViewNavigator}
-        options={{
-          title: '웹 콘텐츠',
-          headerShown: false,
-        }}
-        initialParams={{ url: 'https://chatgpt.com' }}
-      />
-    </Tab.Navigator>
+      <Drawer.Screen name={ROUTES.DRAWER.HOME} component={HomeNavigator} />
+      <Drawer.Screen name={ROUTES.DRAWER.WEBVIEW} component={WebViewNavigator} />
+    </Drawer.Navigator>
   );
 };
 
