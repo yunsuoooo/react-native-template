@@ -9,7 +9,7 @@
     "start": "react-native start",
     "test": "jest",
     "clean-install": "rm -rf node_modules && yarn install",
-    "pod-install": "cd ios && pod install --repo-update",
+    "pod-install": "cd ios && RCT_NEW_ARCH_ENABLED=0 pod install --repo-update",
     "ios-clean": "cd ios && pod deintegrate && rm -rf Pods Podfile.lock && rm -rf ~/Library/Caches/CocoaPods ~/.cocoapods/repos && rm -rf ~/Library/Developer/Xcode/DerivedData/* && pod setup",
     "android-clean": "cd android && ./gradlew clean"
   },
