@@ -61,6 +61,7 @@ export const WebViewScreen = () => {
         startInLoadingState={true}
         hideKeyboardAccessoryView
         keyboardDisplayRequiresUserAction={false}
+        webviewDebuggingEnabled
         useWebView2
         scrollEnabled={false}
         renderLoading={() => (
