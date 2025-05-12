@@ -1,5 +1,6 @@
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { WebViewStackParamList } from '../../../app/navigation/types';
@@ -51,16 +52,17 @@ export const WebViewScreen = () => {
   };
 
   return (
-    <View className="flex-1">
+    <KeyboardAvoidingView behavior={'padding'} className="flex-1">
       <WebView
         source={{ uri: url }}
-        style={styles.webview}
+        className="flex-1"
         injectedJavaScript={injectedJavaScript}
         onMessage={handleWebViewMessage}
         startInLoadingState={true}
         hideKeyboardAccessoryView
         keyboardDisplayRequiresUserAction={false}
         useWebView2
+        scrollEnabled={false}
         renderLoading={() => (
           <ActivityIndicator
             className="absolute top-0 left-0 right-0 bottom-0 justify-center items-center"
@@ -68,14 +70,8 @@ export const WebViewScreen = () => {
           />
         )}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  webview: {
-    flex: 1,
-  },
-});
 
 export default WebViewScreen;
