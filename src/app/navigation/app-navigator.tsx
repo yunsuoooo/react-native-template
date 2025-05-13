@@ -4,9 +4,9 @@ import { RootStackParamList } from './types';
 import { ROUTES } from './routes';
 
 // 스크린 임포트
-import SettingScreen from '../../screens/setting/ui/setting-screen';
-import SplashScreen from '../../screens/splash/ui/splash-screen';
-import MainNavigator from './main-navigator';
+import { SettingScreen } from '../../screens/setting/ui';
+import { SplashScreen } from '../../screens/splash/ui';
+import { MainNavigator } from './main-navigator';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -36,5 +36,3 @@ export const AppNavigator = () => {
     </Stack.Navigator>
   );
 };
-
-export default AppNavigator;

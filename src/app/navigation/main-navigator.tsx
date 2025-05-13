@@ -2,10 +2,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ROUTES } from './routes';
 import { RootStackParamList, DrawerParamList } from './types';
-import Header from '../../shared/ui/layout/header';
+import { Header } from '../../shared/ui/layout';
 import HomeScreen from '../../screens/home/ui/home-screen';
 import WebViewScreen from '../../screens/web-view/ui/web-view-screen';
-import CustomDrawerContent from '../../shared/ui/navigation/custom-drawer-content';
+import { MainDrawerContent } from '../../shared/ui/navigation';
 
 // 홈 스택 네비게이터
 const HomeStack = createNativeStackNavigator<RootStackParamList>();
@@ -49,12 +49,10 @@ export const MainNavigator = () => {
         drawerType: 'slide', // iOS/Android 모두 slide 방식
         drawerStyle: { width: '85%' }, // 드로어 폭
       }}
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      drawerContent={(props) => <MainDrawerContent {...props} />}
     >
       <Drawer.Screen name={ROUTES.HOME} component={HomeNavigator} />
       <Drawer.Screen name={ROUTES.WEBVIEW} component={WebViewNavigator} />
     </Drawer.Navigator>
   );
 };
-
-export default MainNavigator;

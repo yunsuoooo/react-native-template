@@ -6,9 +6,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppNavigation } from '../../../app/navigation/hooks/use-app-navigation';
 import { Icon } from '../icon';
 
-interface CustomDrawerContentProps extends DrawerContentComponentProps {}
+interface MainDrawerContentProps extends DrawerContentComponentProps {}
 
-const CustomDrawerContent = (props: CustomDrawerContentProps) => {
+const MainDrawerContent = (props: MainDrawerContentProps) => {
   const { goToSettings } = useAppNavigation();
   const insets = useSafeAreaInsets();
 
@@ -50,4 +50,4 @@ const CustomDrawerContent = (props: CustomDrawerContentProps) => {
   );
 };
 
-export default CustomDrawerContent;
+export default MainDrawerContent;
