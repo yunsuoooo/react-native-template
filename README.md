@@ -54,13 +54,19 @@ This is a React Native template project designed to help you quickly build new a
    pnpm install
    ```
 
-2. Start Metro bundler:
+2. Rename the app (name and bundle ID):
+
+   ```sh
+   pnpm rename
+   ```
+
+3. Start Metro bundler:
 
    ```sh
    pnpm start
    ```
 
-3. Run the app:
+4. Run the app:
 
    ```sh
    # for iOS (Mac only)

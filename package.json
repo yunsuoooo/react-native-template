@@ -11,7 +11,8 @@
     "clean": "rm -rf node_modules && yarn install",
     "android-clean": "cd android && ./gradlew clean",
     "ios-clean": "cd ios && pod deintegrate && rm -rf Pods Podfile.lock && rm -rf ~/Library/Caches/CocoaPods ~/.cocoapods/repos && rm -rf ~/Library/Developer/Xcode/DerivedData/* && pod setup",
-    "pod-install": "cd ios && RCT_NEW_ARCH_ENABLED=0 pod install --repo-update"
+    "pod-install": "cd ios && RCT_NEW_ARCH_ENABLED=0 pod install --repo-update",
+    "rename": "node scripts/rename-app.js"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^7.3.12",
