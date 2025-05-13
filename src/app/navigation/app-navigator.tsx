@@ -3,9 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from './types';
 import { ROUTES } from './routes';
 
-// 스크린 임포트
-import { SettingScreen } from '../../screens/setting/ui';
-import { SplashScreen } from '../../screens/splash/ui';
+import { SettingScreen } from '@screens/setting/ui';
+import { SplashScreen } from '@screens/splash/ui';
 import { MainNavigator } from './main-navigator';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

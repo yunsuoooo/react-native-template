@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Icon } from '../icon';
-import { useAppNavigation } from '../../../app/navigation/hooks/use-app-navigation';
+import { useAppNavigation } from '@app/navigation/hooks/use-app-navigation';
 
 const Header = () => {
   const { goToHome, openDrawer } = useAppNavigation();

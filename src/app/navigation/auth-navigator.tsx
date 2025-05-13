@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { ROUTES } from './routes';
 import { RootStackParamList } from './types';
-import { LoginScreen, RegisterScreen, ForgotPasswordScreen } from '../../screens/auth/ui';
+import { LoginScreen, RegisterScreen, ForgotPasswordScreen } from '@screens/auth/ui';
 
 // 인증 스택 전용 파라미터 타입
 export type AuthStackParamList = Pick<

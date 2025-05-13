@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-na
 import { DrawerContentComponentProps, DrawerItemList } from '@react-navigation/drawer';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAppNavigation } from '../../../app/navigation/hooks/use-app-navigation';
-import { Icon } from '../icon';
+import { useAppNavigation } from '@app/navigation/hooks/use-app-navigation';
+import { Icon } from '@shared/ui/icon';
 
 interface MainDrawerContentProps extends DrawerContentComponentProps {}
 

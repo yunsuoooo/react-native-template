@@ -13,6 +13,10 @@ export const ROUTES = {
 
   // 특수 화면
   SPLASH: 'Splash',
+
+  // 네비게이터 전용 라우트
+  HOME_SCREEN: 'HomeScreen',
+  WEBVIEW_SCREEN: 'WebViewScreen',
 } as const;
 
 // 타입 정의 - 더 간단한 접근 방식

@@ -3,7 +3,7 @@ import { ActivityIndicator } from 'react-native';
 import { WebView, WebViewProps, WebViewMessageEvent } from 'react-native-webview';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
-import { useAppNavigation } from '../../../app/navigation/hooks/use-app-navigation';
+import { useAppNavigation } from '@app/navigation/hooks/use-app-navigation';
 
 interface WebViewLayoutProps extends Partial<WebViewProps> {
   url: string;

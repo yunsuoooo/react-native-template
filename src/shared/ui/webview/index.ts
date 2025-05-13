@@ -1,2 +1,2 @@
-export { default as WebViewLayout } from './web-view-layout';
-export * from './web-view-layout';
+export { default as WebViewLayout } from './webview-layout';
+export * from './webview-layout';
