@@ -1,97 +1,216 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# React Native Template
 
-# Getting Started
+This is a React Native template project designed to help you quickly build new applications. It includes pre-configured settings and commonly used libraries to speed up development.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Tech Stack
 
-## Step 1: Start Metro
+- React Native (0.79.2)
+- React Native WebView
+- React Native Vector Icons (Feather)
+- NativeWind (TailwindCSS 3)
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Prerequisites
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+### Android Environment Setup
+
+1. Install Java Development Kit (JDK)
+2. Install Android Studio
+   ```sh
+   brew install --cask android-studio
+   ```
+3. Install Android Command Line Tools
+   ```sh
+   brew install android-commandlinetools
+   ```
+4. Configure Android SDK environment variables
+   ```sh
+   export ANDROID_HOME=$HOME/Library/Android/sdk
+   ```
+5. Open Android Studio and install:
+   - SDK Manager
+   - Virtual Device Manager
+
+### iOS Environment Setup
+
+1. Install CocoaPods
+   ```sh
+   brew install cocoapods
+   ```
+
+### Common Dependencies
+
+1. Install Watchman (required for file watching)
+   ```sh
+   brew install watchman
+   ```
+
+## Getting Started
+
+1. Clone the repository and install dependencies:
+
+   ```sh
+   git clone https://github.com/your-org/your-app.git
+   cd your-app
+   pnpm install
+   ```
+
+2. Start Metro bundler:
+
+   ```sh
+   pnpm start
+   ```
+
+3. Run the app:
+
+   ```sh
+   # for iOS (Mac only)
+   pnpm pod-install
+   pnpm ios
+
+   # for Android (ensure emulator is running)
+   pnpm android
+   ```
+
+## Local Development
+
+### iOS Setup
+
+1. Open `ios/YourApp.xcworkspace` in Xcode
+2. Set a valid Team in Signing & Capabilities
+3. Clean build folder (⇧ + ⌘ + K) if needed
+
+### Android Setup
+
+1. Ensure Android Studio is installed with SDK + emulator
+2. Create an emulator via Android Studio or CLI
+3. Start emulator manually, then run `pnpm android`
+
+### Dev Menu Shortcuts
+
+| Platform | Shortcut                       |
+| -------- | ------------------------------ |
+| iOS      | ⌘ + D or Shake device          |
+| Android  | ⌘ + M or ⌃ + M or Shake device |
+
+## 🧪 Troubleshooting
+
+### Android WebView Localhost Access
+
+If you need to access localhost content in Android WebView:
 
 ```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
+# Forward localhost:8080 to the Android device/emulator for WebView access
+adb reverse tcp:8080 tcp:8080
 ```
 
-## Step 2: Build and run your app
+This command allows your Android WebView to access localhost content running on port 8080 of your development machine.
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+### iOS Build Issues
 
-### Android
+#### Error: "xcodebuild exited with code 70"
+
+1. Open `ios/YourApp.xcworkspace` in Xcode
+2. Set a valid development team
+3. Product > Clean Build Folder > Run
+
+#### Sandbox / Hermes Errors
+
+If you see errors like: `Sandbox: rsync.samba(...) deny(1) file-read-data ...hermes.framework`
+
+Try:
 
 ```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+killall Simulator
+killall Xcode
+pnpm ios-clean
+pnpm pod-install
+pnpm ios
 ```
 
-### iOS
+#### Build Service Issues
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+If you see: "Build service: unable to initiate PIF transfer session"
 
 ```sh
-bundle install
+sudo killall -9 xcbuild
 ```
 
-Then, and every time you update your native dependencies, run:
+## Development Tips
 
-```sh
-bundle exec pod install
+### iOS Development
+
+- **Restart App in Simulator**:
+
+  - Press `R` in the iOS Simulator
+  - Or use the Dev Menu (Cmd + M)
+
+- **Debugging**:
+  - Use Safari Developer Tools
+  - Enable Remote JS Debugging in the Dev Menu
+
+### Using Icons
+
+This template uses `react-native-vector-icons` with the Feather icon set:
+
+```jsx
+import Icon from 'react-native-vector-icons/Feather';
+
+// Example usage
+<Icon name="x" size={24} className="text-zinc-600" />;
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+View all available icons at: [Feather Icons](https://oblador.github.io/react-native-vector-icons/#Feather)
 
-```sh
-# Using npm
-npm run ios
+## Known Issues & Solutions
 
-# OR using Yarn
-yarn ios
-```
+### NativeWind Issues
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+1. **Babel Build Error**
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+   - Reference: [NativeWind Issue #894](https://github.com/nativewind/nativewind/issues/894)
 
-## Step 3: Modify your app
+2. **👀 Waiting TailwindCSS v4 Update**
+   - Check status: [NativeWind Discussion #1422](https://github.com/nativewind/nativewind/discussions/1422)
 
-Now that you have successfully run the app, let's make changes!
+### WebView Issues
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+1. **White Screen Issue**
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+   - Reference: [React Native Blog - New Architecture](https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here#opt-out)
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+2. **Android Localhost Connection**
+   - Before accessing localhost in WebView, run:
+     ```sh
+     adb reverse tcp:8080 tcp:8080
+     ```
+   - Solution: [Stack Overflow - Localhost Connection](https://stackoverflow.com/questions/44702554/cant-connect-to-localhost-in-react-native-webview)
 
-## Congratulations! :tada:
+## Troubleshooting
 
-You've successfully run and modified your React Native App. :partying_face:
+### iOS Issues
 
-### Now what?
+If you encounter build or runtime issues with iOS:
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+1. Clean the iOS build:
 
-# Troubleshooting
+   ```sh
+   pnpm ios-clean
+   ```
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+2. Reinstall pods:
 
-# Learn More
+   ```sh
+   pnpm pod-install
+   ```
 
-To learn more about React Native, take a look at the following resources:
+3. Run the app again:
+   ```sh
+   pnpm ios
+   ```
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+> **Note**: You should also run `pnpm pod-install` after:
+>
+> - Adding new native dependencies
+> - Updating existing native packages
+> - Pulling new changes that include native dependencies
+> - Any time you see pod-related errors in the build
