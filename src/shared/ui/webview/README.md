@@ -15,7 +15,7 @@
 ### 기본 사용법
 
 ```tsx
-import { WebViewLayout } from '../../../shared/ui/web-view';
+import { WebViewLayout } from '../../../shared/ui/webview';
 
 const MyScreen = () => {
   return <WebViewLayout url="https://example.com" />;
@@ -25,7 +25,7 @@ const MyScreen = () => {
 ### 커스텀 네비게이션 핸들러 사용
 
 ```tsx
-import { WebViewLayout } from '../../../shared/ui/web-view';
+import { WebViewLayout } from '../../../shared/ui/webview';
 
 const MyScreen = () => {
   const handleNavigation = (url: string) => {
@@ -41,7 +41,7 @@ const MyScreen = () => {
 ### 추가 WebView 속성 사용
 
 ```tsx
-import { WebViewLayout } from '../../../shared/ui/web-view';
+import { WebViewLayout } from '../../../shared/ui/webview';
 
 const MyScreen = () => {
   return (
@@ -58,7 +58,7 @@ const MyScreen = () => {
 ### 커스텀 JavaScript 주입
 
 ```tsx
-import { WebViewLayout } from '../../../shared/ui/web-view';
+import { WebViewLayout } from '../../../shared/ui/webview';
 
 const MyScreen = () => {
   const customJS = `

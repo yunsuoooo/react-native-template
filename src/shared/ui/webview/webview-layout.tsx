@@ -10,6 +10,7 @@ interface WebViewLayoutProps extends Partial<WebViewProps> {
   handleNavigation?: (url: string) => void;
   useKeyboardAvoidingView?: boolean;
   injectedJavaScript?: string;
+  onMessage?: (event: WebViewMessageEvent) => void;
 }
 
 export const WebViewLayout = ({
@@ -17,6 +18,7 @@ export const WebViewLayout = ({
   handleNavigation,
   useKeyboardAvoidingView = true,
   injectedJavaScript,
+  onMessage,
   ...webViewProps
 }: WebViewLayoutProps) => {
   const { goToWebView } = useAppNavigation();
@@ -49,6 +51,11 @@ export const WebViewLayout = ({
   // WebView에서 메시지 수신 처리
   const handleWebViewMessage = useCallback(
     (event: WebViewMessageEvent) => {
+      // 외부에서 전달된 메시지 핸들러가 있으면 먼저 실행
+      if (onMessage) {
+        onMessage(event);
+      }
+
       try {
         const data = JSON.parse(event.nativeEvent.data);
 
@@ -68,7 +75,7 @@ export const WebViewLayout = ({
         console.error('WebView 메시지 처리 오류:', e);
       }
     },
-    [handleNavigation, goToWebView],
+    [handleNavigation, goToWebView, onMessage],
   );
 
   const webViewContent = (

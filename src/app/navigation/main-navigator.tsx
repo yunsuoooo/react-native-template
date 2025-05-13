@@ -3,8 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ROUTES } from './routes';
 import { RootStackParamList, DrawerParamList } from './types';
 import { Header } from '../../shared/ui/layout';
-import HomeScreen from '../../screens/home/ui/home-screen';
-import WebViewScreen from '../../screens/web-view/ui/web-view-screen';
+import { HomeScreen } from '../../screens/home/ui';
+import { WebViewScreen } from '../../screens/webview/ui';
 import { MainDrawerContent } from '../../shared/ui/navigation';
 
 // 홈 스택 네비게이터

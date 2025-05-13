@@ -167,6 +167,56 @@ import Icon from 'react-native-vector-icons/Feather';
 
 View all available icons at: [Feather Icons](https://oblador.github.io/react-native-vector-icons/#Feather)
 
+### Navigation & WebView
+
+This template includes pre-configured navigation and WebView components to help you get started quickly.
+
+#### Navigation
+
+For detailed information about the app's navigation structure, see the dedicated [Navigation README](src/app/navigation/README.md) that covers:
+
+- Navigation structure overview
+- File organization
+- Navigation types
+- Screen navigation methods
+- Using screen parameters
+- How to customize navigation
+
+#### WebView Usage
+
+The template provides a reusable WebView component with built-in features. For detailed usage information, check the [WebView README](src/shared/ui/webview/README.md) that includes:
+
+- Basic usage examples
+- Custom navigation handlers
+- Additional WebView properties
+- Custom JavaScript injection
+- Complete props documentation
+
+For quick implementation, see these examples:
+
+```jsx
+// Basic WebView usage
+import { WebViewLayout } from '../shared/ui/webview';
+
+function WebViewScreen() {
+  return <WebViewLayout url="https://example.com" />;
+}
+
+// Communication with WebView
+const handleWebViewMessage = (event) => {
+  const message = event.nativeEvent.data;
+  console.log('Message from WebView:', message);
+};
+
+<WebView
+  ref={webViewRef}
+  onMessage={handleWebViewMessage}
+  // Other props...
+/>;
+```
+
+Remember to check the Android WebView localhost access instructions in the Troubleshooting section if you need to load content from your development machine.
+
 ## Known Issues & Solutions
 
 ### NativeWind Issues
