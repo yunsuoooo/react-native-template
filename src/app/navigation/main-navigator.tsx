@@ -1,42 +1,35 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomeStackParamList, WebViewStackParamList } from './types';
-import { HOME_STACK_ROUTES, WEBVIEW_STACK_ROUTES } from './route-keys';
 import { ROUTES } from './routes';
+import { RootStackParamList, DrawerParamList } from './types';
 import Header from '../../shared/ui/layout/header';
 import HomeScreen from '../../screens/home/ui/home-screen';
 import WebViewScreen from '../../screens/web-view/ui/web-view-screen';
 import CustomDrawerContent from '../../shared/ui/navigation/custom-drawer-content';
 
-// 스택 네비게이터 정의
-const HomeStack = createNativeStackNavigator<HomeStackParamList>();
-const WebViewStack = createNativeStackNavigator<WebViewStackParamList>();
-
 // 홈 스택 네비게이터
+const HomeStack = createNativeStackNavigator<RootStackParamList>();
 const HomeNavigator = () => (
   <HomeStack.Navigator
     screenOptions={{
-      header: () => {
-        return <Header />;
-      },
+      header: () => <Header />,
     }}
   >
-    <HomeStack.Screen name={HOME_STACK_ROUTES.MAIN} component={HomeScreen} />
+    <HomeStack.Screen name={ROUTES.HOME} component={HomeScreen} />
   </HomeStack.Navigator>
 );
 
 // 웹뷰 스택 네비게이터
+const WebViewStack = createNativeStackNavigator<RootStackParamList>();
 const WebViewNavigator = () => {
   return (
     <WebViewStack.Navigator
       screenOptions={{
-        header: () => {
-          return <Header />;
-        },
+        header: () => <Header />,
       }}
     >
       <WebViewStack.Screen
-        name={WEBVIEW_STACK_ROUTES.MAIN}
+        name={ROUTES.WEBVIEW}
         component={WebViewScreen}
         initialParams={{ url: 'https://chatgpt.com' }}
       />
@@ -45,7 +38,7 @@ const WebViewNavigator = () => {
 };
 
 // 메인 드로어 네비게이터
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator<DrawerParamList>();
 
 export const MainNavigator = () => {
   return (
@@ -56,10 +49,10 @@ export const MainNavigator = () => {
         drawerType: 'slide', // iOS/Android 모두 slide 방식
         drawerStyle: { width: '85%' }, // 드로어 폭
       }}
-      drawerContent={CustomDrawerContent}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-      <Drawer.Screen name={ROUTES.DRAWER.HOME} component={HomeNavigator} />
-      <Drawer.Screen name={ROUTES.DRAWER.WEBVIEW} component={WebViewNavigator} />
+      <Drawer.Screen name={ROUTES.HOME} component={HomeNavigator} />
+      <Drawer.Screen name={ROUTES.WEBVIEW} component={WebViewNavigator} />
     </Drawer.Navigator>
   );
 };

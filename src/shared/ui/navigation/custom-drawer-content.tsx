@@ -2,19 +2,15 @@ import React from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { DrawerContentComponentProps, DrawerItemList } from '@react-navigation/drawer';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import { ROUTES } from '../../../app/navigation/routes';
+
+import { useAppNavigation } from '../../../app/navigation/hooks/use-app-navigation';
 import { Icon } from '../icon';
 
 interface CustomDrawerContentProps extends DrawerContentComponentProps {}
 
 const CustomDrawerContent = (props: CustomDrawerContentProps) => {
-  const navigation = useNavigation<any>();
+  const { goToSettings } = useAppNavigation();
   const insets = useSafeAreaInsets();
-
-  const openSettingScreen = () => {
-    navigation.navigate(ROUTES.ROOT.SETTING);
-  };
 
   return (
     <SafeAreaView className="flex-1 bg-white" style={{ paddingTop: insets.top }}>
@@ -31,7 +27,7 @@ const CustomDrawerContent = (props: CustomDrawerContentProps) => {
 
         {/* additional custom menu item */}
         <View className="px-2 mt-4">
-          <TouchableOpacity className="ml-3 flex-row gap-2 items-center" onPress={openSettingScreen}>
+          <TouchableOpacity className="ml-3 flex-row gap-2 items-center" onPress={goToSettings}>
             <Icon name="settings" size={16} />
             <Text className="text-sm font-semibold text-gray-500">설정</Text>
           </TouchableOpacity>

@@ -1,19 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import { ROUTES } from './routes';
 import { RootStackParamList } from './types';
-import MainNavigator from './main-navigator';
+import { ROUTES } from './routes';
+
+// 스크린 임포트
+import SettingScreen from '../../screens/setting/ui/setting-screen';
 import SplashScreen from '../../screens/splash/ui/splash-screen';
-import SettingNavigator from './setting-navigator';
+import MainNavigator from './main-navigator';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const AppNavigator = () => {
   const initialized = true;
-
   const checkSession = useCallback(() => {}, []);
-
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -26,13 +25,14 @@ export const AppNavigator = () => {
   }, [checkSession]);
 
   if (!initialized || isLoading) {
+    // 초기 로드 화면용 스플래시 스크린
     return <SplashScreen />;
   }
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name={ROUTES.ROOT.MAIN} component={MainNavigator} />
-      <Stack.Screen name={ROUTES.ROOT.SETTING} component={SettingNavigator} options={{ presentation: 'modal' }} />
+      <Stack.Screen name={ROUTES.MAIN} component={MainNavigator} />
+      <Stack.Screen name={ROUTES.SETTINGS} component={SettingScreen} options={{ presentation: 'modal' }} />
     </Stack.Navigator>
   );
 };

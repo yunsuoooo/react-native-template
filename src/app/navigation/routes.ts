@@ -1,27 +1,19 @@
-import { HOME_STACK_ROUTES, AUTH_ROUTES, WEBVIEW_STACK_ROUTES, DRAWER_ROUTES, ROOT_ROUTES } from './route-keys';
-
-// Route structure for use in navigation
+// 단순화된 라우트 키 구조
 export const ROUTES = {
-  HOME: {
-    MAIN: HOME_STACK_ROUTES.MAIN,
-  },
-  WEBVIEW: {
-    MAIN: WEBVIEW_STACK_ROUTES.MAIN,
-  },
-  AUTH: {
-    LOGIN: AUTH_ROUTES.LOGIN,
-    REGISTER: AUTH_ROUTES.REGISTER,
-    FORGOT_PASSWORD: AUTH_ROUTES.FORGOT_PASSWORD,
-  },
-  DRAWER: {
-    HOME: DRAWER_ROUTES.HOME,
-    WEBVIEW: DRAWER_ROUTES.WEBVIEW,
-    SETTING: DRAWER_ROUTES.SETTING,
-  },
-  ROOT: {
-    MAIN: ROOT_ROUTES.MAIN,
-    AUTH: ROOT_ROUTES.AUTH,
-    SETTING: ROOT_ROUTES.SETTING,
-    SPLASH: ROOT_ROUTES.SPLASH,
-  },
-};
+  // 메인 화면들
+  HOME: 'Home',
+  SETTINGS: 'Settings',
+  WEBVIEW: 'WebView',
+  MAIN: 'Main',
+
+  // 인증 관련 화면들
+  LOGIN: 'Login',
+  REGISTER: 'Register',
+  FORGOT_PASSWORD: 'ForgotPassword',
+
+  // 특수 화면
+  SPLASH: 'Splash',
+} as const;
+
+// 타입 정의 - 더 간단한 접근 방식
+export type RouteKey = (typeof ROUTES)[keyof typeof ROUTES];

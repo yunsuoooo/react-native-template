@@ -2,15 +2,10 @@ import { ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { WebViewStackParamList } from '../../../app/navigation/types';
-import { WEBVIEW_STACK_ROUTES } from '../../../app/navigation/route-keys';
-
-type WebViewScreenRouteProp = RouteProp<WebViewStackParamList, typeof WEBVIEW_STACK_ROUTES.MAIN>;
+import { useWebViewParams } from '../../../app/navigation/hooks/use-screen-params';
 
 export const WebViewScreen = () => {
-  const route = useRoute<WebViewScreenRouteProp>();
-  const { url } = route.params;
+  const { url } = useWebViewParams();
 
   // WebView와 네이티브 앱 간의 통신을 위한 JavaScript 코드
   const injectedJavaScript = `
