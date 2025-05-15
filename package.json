@@ -8,13 +8,14 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "clean": "rm -rf node_modules && yarn install",
+    "clean": "rm -rf node_modules",
     "android-clean": "cd android && ./gradlew clean",
     "ios-clean": "cd ios && pod deintegrate && rm -rf Pods Podfile.lock && rm -rf ~/Library/Caches/CocoaPods ~/.cocoapods/repos && rm -rf ~/Library/Developer/Xcode/DerivedData/* && pod setup",
     "pod-install": "cd ios && RCT_NEW_ARCH_ENABLED=0 pod install --repo-update",
     "rename": "node scripts/rename-app.js"
   },
   "dependencies": {
+    "@react-native/gradle-plugin": "^0.79.2",
     "@react-navigation/bottom-tabs": "^7.3.12",
     "@react-navigation/drawer": "^7.3.11",
     "@react-navigation/native": "^7.1.8",
