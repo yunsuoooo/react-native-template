@@ -4,49 +4,28 @@ import { WebView, WebViewProps, WebViewMessageEvent } from 'react-native-webview
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
 import { useAppNavigation } from '@app/navigation/hooks/use-app-navigation';
+import { getInjectedJavaScript } from './webview-injected-scripts';
 
 interface WebViewLayoutProps extends Partial<WebViewProps> {
+  ref: React.RefObject<WebView>;
   url: string;
+  initializeWebView?: () => void;
   handleNavigation?: (url: string) => void;
   useKeyboardAvoidingView?: boolean;
-  injectedJavaScript?: string;
-  onMessage?: (event: WebViewMessageEvent) => void;
 }
 
 export const WebViewLayout = ({
+  ref,
   url,
+  initializeWebView,
   handleNavigation,
   useKeyboardAvoidingView = true,
   injectedJavaScript,
+  onLoadEnd,
   onMessage,
   ...webViewProps
 }: WebViewLayoutProps) => {
   const { goToWebView } = useAppNavigation();
-
-  const finalInjectedJavaScript = `
-    // 네이티브 앱과 통신하기 위한 함수
-    window.ReactNativeWebView.postMessage = function(data) {
-      window.ReactNativeWebView.postMessage(JSON.stringify(data));
-    };
-    
-    // 웹 페이지의 링크 클릭 이벤트 감지
-    document.addEventListener('click', function(e) {
-      if (e.target.tagName === 'A') {
-        const href = e.target.getAttribute('href');
-        if (href && !href.startsWith('#')) {
-          e.preventDefault();
-          window.ReactNativeWebView.postMessage(JSON.stringify({
-            type: 'navigation',
-            url: href
-          }));
-        }
-      }
-    });
-
-    ${injectedJavaScript ? injectedJavaScript : ''}
-    
-    true;
-  `;
 
   // WebView에서 메시지 수신 처리
   const handleWebViewMessage = useCallback(
@@ -57,19 +36,41 @@ export const WebViewLayout = ({
       }
 
       try {
-        const data = JSON.parse(event.nativeEvent.data);
+        const { type, data, url } = JSON.parse(event.nativeEvent.data) as {
+          type: 'log' | 'warn' | 'error' | 'info' | 'debug' | 'navigation';
+          data: any[];
+          url?: string;
+        };
+        // 콘솔 로그 처리
+        switch (type) {
+          case 'log':
+            console.log('WebView Console [LOG]:', ...data);
+            break;
+          case 'warn':
+            console.warn('WebView Console [WARN]:', ...data);
+            break;
+          case 'error':
+            console.error('WebView Console [ERROR]:', ...data);
+            break;
+          case 'info':
+            console.info('WebView Console [INFO]:', ...data);
+            break;
+          case 'debug':
+            console.debug('WebView Console [DEBUG]:', ...data);
+            break;
+          case 'navigation':
+            if (!url) return;
 
-        // 네비게이션 요청 처리
-        if (data.type === 'navigation') {
-          console.log('웹뷰 내부 네비게이션 요청:', data.url);
-
-          if (handleNavigation) {
-            // 커스텀 네비게이션 핸들러가 있으면 사용
-            handleNavigation(data.url);
-          } else {
-            // 기본 네비게이션 처리: 새 웹뷰 화면 열기
-            goToWebView(data.url);
-          }
+            console.log('웹뷰 내부 네비게이션 요청:', url);
+            if (handleNavigation) {
+              handleNavigation(url);
+            } else {
+              goToWebView(url);
+            }
+            break;
+          default:
+            if (onMessage) break;
+            console.log('WebView Message:', event.nativeEvent.data);
         }
       } catch (e) {
         console.error('WebView 메시지 처리 오류:', e);
@@ -78,17 +79,30 @@ export const WebViewLayout = ({
     [handleNavigation, goToWebView, onMessage],
   );
 
+  const handleLoadEnd = useCallback(() => {
+    if (ref.current) {
+      initializeWebView?.();
+    }
+  }, [initializeWebView]);
+
   const webViewContent = (
     <WebView
+      ref={ref}
       source={{ uri: url }}
       className="flex-1"
-      injectedJavaScript={finalInjectedJavaScript}
+      onLoadEnd={handleLoadEnd}
       onMessage={handleWebViewMessage}
       startInLoadingState={true}
       hideKeyboardAccessoryView
       keyboardDisplayRequiresUserAction={false}
+      injectedJavaScript={getInjectedJavaScript(injectedJavaScript)}
       webviewDebuggingEnabled
       useWebView2
+      javaScriptEnabled={true}
+      domStorageEnabled={true}
+      allowFileAccess={true}
+      allowFileAccessFromFileURLs={true}
+      allowUniversalAccessFromFileURLs={true}
       scrollEnabled={false}
       renderLoading={() => (
         <ActivityIndicator
@@ -102,7 +116,7 @@ export const WebViewLayout = ({
 
   if (useKeyboardAvoidingView) {
     return (
-      <KeyboardAvoidingView behavior={'padding'} className="flex-1">
+      <KeyboardAvoidingView behavior="padding" className="flex-1">
         {webViewContent}
       </KeyboardAvoidingView>
     );
