@@ -6,7 +6,8 @@
       "@/*": ["src/*"],
       "@app/*": ["src/app/*"],
       "@screens/*": ["src/screens/*"],
-      "@shared/*": ["src/shared/*"]
+      "@shared/*": ["src/shared/*"],
+      "@config/*": ["src/shared/config/*"]
     }
   }
 }
