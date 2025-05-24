@@ -49,6 +49,22 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 
+	<!-- Deep linking for OAuth callbacks -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>myapp</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<!-- #TODO Replace 'myapp' with your actual scheme -->
+				<string>myapp</string>
+			</array>
+		</dict>
+	</array>
+
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

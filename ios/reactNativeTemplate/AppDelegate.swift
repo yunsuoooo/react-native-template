@@ -31,6 +31,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     return true
   }
+  
+  // 딥링크를 처리하기 위한 메서드
+  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    // URL 정보를 콘솔에 출력 (디버깅용)
+    print("딥링크로 열림: \(url.absoluteString)")
+    
+    // JS 쪽으로 URL 이벤트 보내기
+    NotificationCenter.default.post(
+      name: NSNotification.Name("RCTOpenURLNotification"),
+      object: nil,
+      userInfo: ["url": url.absoluteString]
+    )
+    return true
+  }
+  
+  // Universal Links를 처리하기 위한 메서드
+  func application(
+    _ application: UIApplication,
+    continue userActivity: NSUserActivity,
+    restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+      // Universal Link URL 정보 추출
+      if userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+        let url = userActivity.webpageURL {
+        print("Universal Link로 열림: \(url.absoluteString)")
+        
+        // JS 쪽으로 URL 이벤트 보내기
+        NotificationCenter.default.post(
+          name: NSNotification.Name("RCTOpenURLNotification"),
+          object: nil,
+          userInfo: ["url": url.absoluteString]
+        )
+        return true
+      }
+      return false
+    }
 }
 
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {

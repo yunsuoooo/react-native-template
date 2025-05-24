@@ -4,9 +4,12 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import './global.css';
 
+import { useDeepLinking } from '@/shared/hooks';
 import Navigation from './navigation';
 
 function App(): React.JSX.Element {
+  useDeepLinking();
+
   return (
     <KeyboardProvider>
       <SafeAreaProvider className="flex-1">
