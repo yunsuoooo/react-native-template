@@ -5,7 +5,8 @@ import { ROUTES } from './routes';
 
 import { SettingScreen } from '@screens/setting/ui';
 import { SplashScreen } from '@screens/splash/ui';
-import { MainNavigator } from './main-navigator';
+import { WebViewScreen } from '@screens/webview/ui';
+import { TabNavigator } from './tab-navigator';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -30,8 +31,23 @@ export const AppNavigator = () => {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name={ROUTES.MAIN} component={MainNavigator} />
-      <Stack.Screen name={ROUTES.SETTINGS} component={SettingScreen} options={{ presentation: 'modal' }} />
+      {/* 탭 네비게이터 - Bottom Tab이 있는 메인 화면들 */}
+      <Stack.Screen name={ROUTES.TAB_NAVIGATOR} component={TabNavigator} />
+      
+      {/* 전체화면 스크린들 - Bottom Tab 없음 */}
+      <Stack.Screen 
+        name={ROUTES.SETTINGS} 
+        component={SettingScreen} 
+        options={{ presentation: 'modal' }} 
+      />
+      <Stack.Screen 
+        name={ROUTES.FULLSCREEN_WEBVIEW} 
+        component={WebViewScreen} 
+        options={{ 
+          presentation: 'fullScreenModal',
+          animation: 'slide_from_bottom' 
+        }} 
+      />
     </Stack.Navigator>
   );
 };

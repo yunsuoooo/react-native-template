@@ -3,6 +3,11 @@ import { RouteProp } from '@react-navigation/native';
 
 // 간소화된 파라미터 타입 구조
 export type RootStackParamList = {
+  // 메인 네비게이터들
+  [ROUTES.MAIN]: undefined;
+  [ROUTES.TAB_NAVIGATOR]: undefined;
+  
+  // 개별 스크린들
   [ROUTES.HOME]: undefined;
   [ROUTES.SETTINGS]: undefined;
   [ROUTES.WEBVIEW]: { url: string } | undefined;
@@ -10,15 +15,17 @@ export type RootStackParamList = {
   [ROUTES.REGISTER]: undefined;
   [ROUTES.FORGOT_PASSWORD]: undefined;
   [ROUTES.SPLASH]: undefined;
-  [ROUTES.MAIN]: undefined;
   [ROUTES.HOME_SCREEN]: undefined;
   [ROUTES.WEBVIEW_SCREEN]: { url: string } | undefined;
+  [ROUTES.FULLSCREEN_WEBVIEW]: { url: string };
+  [ROUTES.MODAL_SCREEN]: undefined;
 };
 
-// Drawer 네비게이션 타입 추가
-export type DrawerParamList = {
-  [ROUTES.HOME]: undefined;
-  [ROUTES.WEBVIEW]: undefined;
+// 탭 네비게이터 타입 정의
+export type TabParamList = {
+  [ROUTES.TAB_HOME]: undefined;
+  [ROUTES.TAB_RUN]: undefined;
+  [ROUTES.TAB_PROFILE]: undefined;
 };
 
 // 화면별 route 타입 별칭
