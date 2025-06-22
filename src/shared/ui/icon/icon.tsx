@@ -1,28 +1,35 @@
 import { cssInterop } from 'nativewind';
-import FeatherIcon from 'react-native-vector-icons/Feather';
+import {
+  User,
+  Shapes,
+  Plus,
+} from 'lucide-react-native';
 
-import type { FeatherIconName } from './icon.types';
+const iconMap = {
+  user: User,
+  shapes: Shapes,
+  plus: Plus,
+} as const;
 
 interface CustomIconProps {
-  name: FeatherIconName;
+  name: keyof typeof iconMap;
   size?: number;
   className?: string;
   color?: string;
 }
 
-/**
- * FeatherIcon 컴포넌트
- * @param name - 아이콘
- * @param size - 아이콘 크기
- * @param className - 아이콘 색상 적용
- * @param color - 입력 X (only css interop)
- * @returns FeatherIcon 컴포넌트
- */
-const IconComponent = ({ name, size = 20, color = 'black', ...rest }: CustomIconProps) => {
-  return <FeatherIcon name={name} size={size} color={color} {...rest} />;
+const Icon = ({ name, color, size }: CustomIconProps) => {
+  const LucideIcon = iconMap[name];
+
+  if (!LucideIcon) {
+    console.warn(`Icon "${name}" not found`);
+    return null;
+  }
+
+  return <LucideIcon color={color} size={size} />;
 };
 
-const CustomIcon = cssInterop(IconComponent, {
+const CustomIcon = cssInterop(Icon, {
   className: {
     target: false,
     nativeStyleToProp: {
