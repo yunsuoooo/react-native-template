@@ -1,4 +1,4 @@
-package com.reactNativeTemplate
+package com.yun.pacee
 
 import android.app.Application
 import com.facebook.react.PackageList
