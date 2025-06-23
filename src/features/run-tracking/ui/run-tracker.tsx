@@ -116,20 +116,13 @@ export const RunTracker: React.FC<RunTrackerProps> = ({ onRunSaved }) => {
 
   return (
     <View className="flex-1 p-4">
-      {/* 에러 표시 */}
-      {error && (
-        <View className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
-          <Text className="text-red-600 text-sm">{error}</Text>
-        </View>
-      )}
-
-      {/* 현재 위치 표시 */}
-      <CurrentLocationDisplay location={currentLocation} />
-
       {/* 러닝 통계 */}
       <View className="my-6">
         <RunTrackerStats stats={stats} />
       </View>
+
+      {/* 현재 위치 표시 */}
+      <CurrentLocationDisplay location={currentLocation} />
 
       {/* 컨트롤 버튼들 */}
       <RunTrackerControls

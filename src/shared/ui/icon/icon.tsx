@@ -4,6 +4,7 @@ import {
   Shapes,
   Plus,
   ChevronLeft,
+  ShieldAlert,
 } from 'lucide-react-native';
 
 const iconMap = {
@@ -11,6 +12,7 @@ const iconMap = {
   shapes: Shapes,
   plus: Plus,
   'chevron-left': ChevronLeft,
+  'shield-alert': ShieldAlert,
 } as const;
 
 interface CustomIconProps {
