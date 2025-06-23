@@ -1,3 +1,4 @@
+export * from './env.config';
 export * from './env.types';
-export { default as env, isProduction, isStaging, isDevelopment, isDebugEnabled, hasEnvVar } from './env.config';
-export { getMissingEnvVars, validateEnv, getMissingEnvVarsMessage } from './env.utils';
+export * from './env.utils';
+export * from './supabase';

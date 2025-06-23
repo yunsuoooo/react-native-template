@@ -4,11 +4,11 @@ import { TabParamList } from './types';
 import { ROUTES } from './routes';
 import { HomeScreen } from '@screens/home/ui';
 import { TabBar } from '@shared/ui/layout';
+import { RunningScreen } from '@/screens/running/ui/running-screen';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
 // 탭 스크린들을 위한 임시 컴포넌트들 (나중에 실제 스크린으로 교체)
-const RunScreen = () => <HomeScreen />;
 const ProfileScreen = () => <HomeScreen />;
 
 export const TabNavigator = () => {
@@ -21,7 +21,7 @@ export const TabNavigator = () => {
     >
       <Tab.Screen name={ROUTES.TAB_HOME} component={HomeScreen}/>
       <Tab.Screen name={ROUTES.TAB_PROFILE} component={ProfileScreen} />
-      <Tab.Screen name={ROUTES.TAB_RUN} component={RunScreen} />
+      <Tab.Screen name={ROUTES.TAB_RUN} component={RunningScreen} />
     </Tab.Navigator>
   );
 }; 

@@ -38,3 +38,13 @@ export const getMissingEnvVarsMessage = (): string => {
 
   return `Missing required environment variables: ${missing.join(', ')}. Please check your .env file.`;
 };
+
+/**
+ * Get environment variable value with fallback
+ * @param key Environment variable key
+ * @param fallback Fallback value if key is not found
+ * @returns Environment variable value or fallback
+ */
+export const getEnv = (key: string, fallback: string = ''): string => {
+  return Config[key] || fallback;
+};

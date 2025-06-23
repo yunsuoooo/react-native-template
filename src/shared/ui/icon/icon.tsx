@@ -3,12 +3,14 @@ import {
   User,
   Shapes,
   Plus,
+  ChevronLeft,
 } from 'lucide-react-native';
 
 const iconMap = {
   user: User,
   shapes: Shapes,
   plus: Plus,
+  'chevron-left': ChevronLeft,
 } as const;
 
 interface CustomIconProps {
