@@ -11,7 +11,8 @@ export interface Run {
   
   // 거리 및 시간
   distance_m: number;
-  duration_ms: number;
+  duration_ms: number; // 실제 러닝 시간 (일시정지 시간 제외)
+  total_elapsed_time_ms: number; // 전체 경과 시간 (일시정지 시간 포함)
   
   // 속도 정보 (m/s)
   avg_speed_ms?: number;
@@ -52,7 +53,8 @@ export interface CreateRunData {
   start_time: string;
   end_time: string;
   distance_m: number;
-  duration_ms: number;
+  duration_ms: number; // 실제 러닝 시간
+  total_elapsed_time_ms: number; // 전체 경과 시간
   route_json: LocationPoint[];
   
   // 통계 필드들 (자동 계산되지만 수동 입력 가능)
@@ -76,7 +78,8 @@ export interface UpdateRunData {
   start_time?: string;
   end_time?: string;
   distance_m?: number;
-  duration_ms?: number;
+  duration_ms?: number; // 실제 러닝 시간
+  total_elapsed_time_ms?: number; // 전체 경과 시간
   route_json?: LocationPoint[];
   
   // 통계 필드들
@@ -98,7 +101,8 @@ export interface UpdateRunData {
 export interface RunStats {
   // 기본 통계
   distance: number; // meters
-  duration: number; // milliseconds
+  duration: number; // milliseconds (actual running time, excluding paused time)
+  totalElapsedTime: number; // milliseconds (total time from start to current)
   pace: number; // seconds per km
   speed: number; // m/s
   

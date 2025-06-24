@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Geolocation, { GeoPosition } from 'react-native-geolocation-service';
 import { getDistance } from '@/entities/location';
 import { runApi } from '../api/runApi';
+import { useTimer } from '@/shared/hooks';
 import type { LocationPoint } from '@/entities/location';
 import type { RunStats } from '../model/types';
 
@@ -35,15 +36,16 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
     updateInterval = 3000, // 3초마다 위치 업데이트
   } = options;
 
+  // 타이머 hook 사용
+  const timer = useTimer({ updateInterval: 100 });
+
   // 상태
   const [isTracking, setIsTracking] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
   const [currentLocation, setCurrentLocation] = useState<LocationPoint | null>(null);
   const [routePoints, setRoutePoints] = useState<LocationPoint[]>([]);
   const [error, setError] = useState<string | null>(null);
   
-  // 추적 시작 시간
-  const startTimeRef = useRef<Date | null>(null);
+  // 위치 추적 관련 ref들
   const watchIdRef = useRef<number | null>(null);
 
   // 새로운 위치를 처리하는 함수
@@ -61,7 +63,7 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
     setCurrentLocation(newPoint);
 
     // 일시정지 중이면 위치만 업데이트하고 경로에는 추가하지 않음
-    if (isPaused) return;
+    if (timer.isPaused) return;
 
     setRoutePoints(prev => {
       // 첫 번째 포인트는 무조건 추가
@@ -85,7 +87,6 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
   // 위치 추적 시작
   const startTracking = () => {
     setError(null);
-    startTimeRef.current = new Date();
     
     const watchId = Geolocation.watchPosition(
       handleNewLocation,
@@ -93,27 +94,29 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
         console.error('Location error:', err);
         setError(`위치 추적 오류: ${err.message}`);
       },
-             {
-         enableHighAccuracy: true,
-         interval: updateInterval,
-         fastestInterval: 1000,
-         distanceFilter: 1, // 1미터마다 업데이트
-       }
+      {
+        enableHighAccuracy: true,
+        interval: updateInterval,
+        fastestInterval: 1000,
+        distanceFilter: 1, // 1미터마다 업데이트
+      }
     );
 
     watchIdRef.current = watchId;
     setIsTracking(true);
-    setIsPaused(false);
+    
+    // 타이머 시작
+    timer.start();
   };
 
   // 위치 추적 일시정지
   const pauseTracking = () => {
-    setIsPaused(true);
+    timer.pause();
   };
 
   // 위치 추적 재개
   const resumeTracking = () => {
-    setIsPaused(false);
+    timer.resume();
   };
 
   // 위치 추적 중지 및 저장
@@ -123,14 +126,14 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
       watchIdRef.current = null;
     }
 
+    // 타이머 정지
+    timer.stop();
     setIsTracking(false);
-    setIsPaused(false);
 
     // 러닝 데이터 저장
-    if (routePoints.length > 1 && startTimeRef.current) {
+    if (routePoints.length > 1) {
       try {
         const endTime = new Date();
-        const duration = endTime.getTime() - startTimeRef.current.getTime();
         
         // 총 거리 계산
         let totalDistance = 0;
@@ -139,10 +142,11 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
         }
 
         const runData = {
-          start_time: startTimeRef.current.toISOString(),
+          start_time: new Date(Date.now() - timer.totalElapsedTime).toISOString(),
           end_time: endTime.toISOString(),
           distance_m: Math.round(totalDistance),
-          duration_ms: duration,
+          duration_ms: timer.elapsedTime, // 실제 러닝 시간
+          total_elapsed_time_ms: timer.totalElapsedTime, // 전체 경과 시간
           route_json: routePoints,
         };
 
@@ -163,15 +167,14 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
     setCurrentLocation(null);
     setRoutePoints([]);
     setError(null);
-    startTimeRef.current = null;
+    timer.reset();
   };
 
-  // 실시간 통계 계산
-  const stats: RunStats = (() => {
-    if (routePoints.length < 2 || !startTimeRef.current) {
+  // 경로 기반 통계 계산 (위치 업데이트시에만 계산)
+  const routeStats = useMemo(() => {
+    if (routePoints.length < 2) {
       return {
         distance: 0,
-        duration: 0,
         pace: 0,
         speed: 0,
         avgSpeed: 0,
@@ -187,7 +190,7 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
     let maxSpeed = 0;
     let elevationGain = 0;
     let elevationLoss = 0;
-    let lastElevation = routePoints[0].altitude || 0;
+    let lastElevation = routePoints[0]?.altitude || 0;
 
     for (let i = 1; i < routePoints.length; i++) {
       const prev = routePoints[i - 1];
@@ -218,27 +221,28 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
       }
     }
 
-    const currentTime = isPaused && startTimeRef.current 
-      ? startTimeRef.current.getTime() 
-      : new Date().getTime();
-    const duration = currentTime - startTimeRef.current.getTime();
-    const durationSeconds = duration / 1000;
-    
+    const durationSeconds = timer.elapsedTime / 1000;
     const avgSpeed = durationSeconds > 0 ? totalDistance / durationSeconds : 0;
     const pace = totalDistance > 0 ? (durationSeconds / (totalDistance / 1000)) : 0;
 
     return {
       distance: Math.round(totalDistance),
-      duration,
       pace: Math.round(pace),
       speed: parseFloat(avgSpeed.toFixed(2)),
       avgSpeed: parseFloat(avgSpeed.toFixed(2)),
       maxSpeed: parseFloat(maxSpeed.toFixed(2)),
-      calories: Math.round((8 * 70 * (duration / (1000 * 60 * 60)))), // 간단한 칼로리 계산
+      calories: Math.round((8 * 70 * (timer.elapsedTime / (1000 * 60 * 60)))),
       elevationGain: Math.round(elevationGain),
       elevationLoss: Math.round(elevationLoss),
     };
-  })();
+  }, [routePoints, timer.elapsedTime]);
+
+  // 최종 통계 객체
+  const stats: RunStats = {
+    ...routeStats,
+    duration: timer.elapsedTime,
+    totalElapsedTime: timer.totalElapsedTime,
+  };
 
   // 컴포넌트 언마운트 시 정리
   useEffect(() => {
@@ -252,7 +256,7 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
   return {
     // 상태
     isTracking,
-    isPaused,
+    isPaused: timer.isPaused,
     currentLocation,
     routePoints,
     stats,

@@ -1,17 +1,21 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { formatDistance, formatDuration, formatPace, formatSpeed } from '@/entities/run';
+import { formatDistance, formatDuration, formatDurationWithMs, formatPace, formatSpeed } from '@/entities/run';
 import type { RunStats } from '@/entities/run';
 
 interface RunTrackerStatsProps {
   stats: RunStats;
   className?: string;
+  showMilliseconds?: boolean; // 밀리초 표시 옵션
 }
 
 export const RunTrackerStats: React.FC<RunTrackerStatsProps> = ({
   stats,
   className = '',
+  showMilliseconds = true,
 }) => {
+  const formatTime = showMilliseconds ? formatDurationWithMs : formatDuration;
+  
   return (
     <View className={`bg-gray-50 rounded-lg p-6 ${className}`}>
       {/* 메인 통계 */}
@@ -24,10 +28,16 @@ export const RunTrackerStats: React.FC<RunTrackerStatsProps> = ({
         </View>
         
         <View className="items-center flex-1">
-          <Text className="text-sm text-gray-600">시간</Text>
+          <Text className="text-sm text-gray-600">러닝 시간</Text>
           <Text className="text-xl font-bold text-green-600">
-            {formatDuration(stats.duration)}
+            {formatTime(stats.duration)}
           </Text>
+          {/* 전체 경과 시간도 작게 표시 */}
+          {stats.totalElapsedTime !== stats.duration && (
+            <Text className="text-xs text-gray-400 mt-1">
+              전체: {formatTime(stats.totalElapsedTime)}
+            </Text>
+          )}
         </View>
         
         <View className="items-center flex-1">
@@ -61,6 +71,33 @@ export const RunTrackerStats: React.FC<RunTrackerStatsProps> = ({
           </Text>
         </View>
       </View>
+      
+      {/* 시간 상세 정보 (휴식 시간이 있을 때만 표시) */}
+      {stats.totalElapsedTime > stats.duration && (
+        <View className="mt-4 pt-3 border-t border-gray-100">
+          <Text className="text-xs text-gray-500 text-center mb-2">시간 상세</Text>
+          <View className="flex-row justify-between">
+            <View className="items-center flex-1">
+              <Text className="text-xs text-gray-400">순수 러닝</Text>
+              <Text className="text-sm font-medium text-green-600">
+                {formatTime(stats.duration)}
+              </Text>
+            </View>
+            <View className="items-center flex-1">
+              <Text className="text-xs text-gray-400">휴식 시간</Text>
+              <Text className="text-sm font-medium text-orange-600">
+                {formatTime(stats.totalElapsedTime - stats.duration)}
+              </Text>
+            </View>
+            <View className="items-center flex-1">
+              <Text className="text-xs text-gray-400">전체 시간</Text>
+              <Text className="text-sm font-medium text-gray-600">
+                {formatTime(stats.totalElapsedTime)}
+              </Text>
+            </View>
+          </View>
+        </View>
+      )}
     </View>
   );
 }; 

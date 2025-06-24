@@ -14,6 +14,7 @@ export function calculateRunStats(
     return {
       distance: 0,
       duration: durationMs,
+      totalElapsedTime: durationMs, // 기본적으로 duration과 동일
       pace: 0,
       speed: 0,
       avgSpeed: 0,
@@ -85,6 +86,7 @@ export function calculateRunStats(
   return {
     distance: Math.round(totalDistance),
     duration: durationMs,
+    totalElapsedTime: durationMs, // 기본적으로 duration과 동일
     pace: Math.round(pace),
     speed: parseFloat(avgSpeed.toFixed(2)),
     avgSpeed: parseFloat(avgSpeed.toFixed(2)),
@@ -118,6 +120,25 @@ export function formatDuration(milliseconds: number): string {
     return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   }
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+/**
+ * 시간을 밀리초까지 포함하여 포맷팅합니다 (hh:mm:ss:ms)
+ */
+export function formatDurationWithMs(milliseconds: number): string {
+  const totalMs = Math.floor(milliseconds);
+  const ms = totalMs % 1000;
+  const totalSeconds = Math.floor(totalMs / 1000);
+  const seconds = totalSeconds % 60;
+  const minutes = Math.floor(totalSeconds / 60) % 60;
+  const hours = Math.floor(totalSeconds / 3600);
+
+  const msFormatted = ms.toString().padStart(3, '0'); // 밀리초는 3자리로
+  const secondsFormatted = seconds.toString().padStart(2, '0');
+  const minutesFormatted = minutes.toString().padStart(2, '0');
+  const hoursFormatted = hours.toString().padStart(2, '0');
+
+  return `${hoursFormatted}:${minutesFormatted}:${secondsFormatted}:${msFormatted}`;
 }
 
 /**

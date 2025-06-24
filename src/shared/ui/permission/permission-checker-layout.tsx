@@ -1,4 +1,3 @@
-import { BlurView } from '@react-native-community/blur';
 import { View } from 'react-native';
 
 export const PermissionCheckerLayout = ({ children }: { children: React.ReactNode }) => {
