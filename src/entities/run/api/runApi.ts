@@ -129,12 +129,13 @@ export async function deleteRun(id: string): Promise<{ success: boolean; error?:
 export const runApi = {
   // 러닝 기록 생성
   async createRun(data: CreateRunData): Promise<Run> {
-    // 통계 계산
-    const stats = calculateRunStats(data.route_json, data.duration_ms);
+    // 일시정지된 포인트 제외하고 통계 계산
+    const activePoints = data.route_json.filter(point => !point.isPaused);
+    const stats = calculateRunStats(activePoints, data.duration_ms);
     
     const runData = {
       ...data,
-      total_points: data.route_json.length,
+      total_points: data.route_json.length, // 전체 포인트 수 (일시정지 포함)
       avg_speed_ms: stats.avgSpeed,
       max_speed_ms: stats.maxSpeed,
       avg_pace_s_per_km: stats.pace,
@@ -185,10 +186,12 @@ export const runApi = {
     // 경로가 업데이트되면 통계 다시 계산
     let updateData = { ...updates };
     if (updates.route_json && updates.duration_ms) {
-      const stats = calculateRunStats(updates.route_json, updates.duration_ms);
+      // 일시정지된 포인트 제외하고 통계 계산
+      const activePoints = updates.route_json.filter(point => !point.isPaused);
+      const stats = calculateRunStats(activePoints, updates.duration_ms);
       updateData = {
         ...updateData,
-        total_points: updates.route_json.length,
+        total_points: updates.route_json.length, // 전체 포인트 수 (일시정지 포함)
         avg_speed_ms: stats.avgSpeed,
         max_speed_ms: stats.maxSpeed,
         avg_pace_s_per_km: stats.pace,
