@@ -6,9 +6,9 @@ import type { RunStats } from '../model/types';
  * 러닝 경로에서 통계를 계산합니다
  */
 export function calculateRunStats(
-  route: LocationPoint[], 
+  route: LocationPoint[],
   durationMs: number,
-  userWeight = 70 // kg, 기본값
+  userWeight = 70, // kg, 기본값
 ): RunStats {
   if (route.length < 2) {
     return {
@@ -37,11 +37,11 @@ export function calculateRunStats(
   for (let i = 1; i < route.length; i++) {
     const prev = route[i - 1];
     const curr = route[i];
-    
+
     // 거리 계산
     const segmentDistance = getDistance(prev, curr);
     totalDistance += segmentDistance;
-    
+
     // 속도 계산 (시간 차이가 있는 경우)
     if (prev.timestamp && curr.timestamp) {
       const timeDiff = (new Date(curr.timestamp).getTime() - new Date(prev.timestamp).getTime()) / 1000; // 초
@@ -51,7 +51,7 @@ export function calculateRunStats(
         maxSpeed = Math.max(maxSpeed, segmentSpeed);
       }
     }
-    
+
     // 고도 변화 계산
     if (curr.altitude !== undefined && lastElevation !== undefined) {
       const elevationDiff = curr.altitude - lastElevation;
@@ -66,20 +66,20 @@ export function calculateRunStats(
 
   const durationSeconds = durationMs / 1000;
   const avgSpeed = durationSeconds > 0 ? totalDistance / durationSeconds : 0;
-  
+
   // 페이스 계산 (초/km)
   const pace = totalDistance > 0 ? (durationSeconds / (totalDistance / 1000)) : 0;
-  
+
   // 칼로리 계산 (간단한 공식: MET * 체중 * 시간)
   // 러닝 MET 값은 속도에 따라 달라짐 (약 8-15)
   const avgPaceMinutesPerKm = pace / 60;
   let met = 8; // 기본 MET 값
-  
+
   if (avgPaceMinutesPerKm < 4) met = 15; // 매우 빠름
   else if (avgPaceMinutesPerKm < 5) met = 12; // 빠름
   else if (avgPaceMinutesPerKm < 6) met = 10; // 보통
   else if (avgPaceMinutesPerKm < 7) met = 8; // 천천히
-  
+
   const durationHours = durationMs / (1000 * 60 * 60);
   const calories = Math.round(met * userWeight * durationHours);
 
@@ -169,4 +169,4 @@ export function getRunTypeLabel(runType: string): string {
     interval: '인터벌',
   };
   return labels[runType] || runType;
-} 
+}

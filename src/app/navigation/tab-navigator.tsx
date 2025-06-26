@@ -24,4 +24,4 @@ export const TabNavigator = () => {
       <Tab.Screen name={ROUTES.TAB_RUN} component={RunningScreen} />
     </Tab.Navigator>
   );
-}; 
+};

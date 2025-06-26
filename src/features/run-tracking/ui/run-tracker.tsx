@@ -42,11 +42,11 @@ interface DebugInfoProps {
   totalDistance: number;
 }
 
-const DebugInfo: React.FC<DebugInfoProps> = ({ 
-  isTracking, 
-  isPaused, 
-  routePointsCount, 
-  totalDistance 
+const DebugInfo: React.FC<DebugInfoProps> = ({
+  isTracking,
+  isPaused,
+  routePointsCount,
+  totalDistance,
 }) => {
   if (!__DEV__) return null;
 
@@ -110,7 +110,7 @@ export const RunTracker: React.FC<RunTrackerProps> = ({ onRunSaved }) => {
       [
         { text: '취소', style: 'cancel' },
         { text: '삭제', style: 'destructive', onPress: resetTracking },
-      ]
+      ],
     );
   };
 
@@ -144,4 +144,4 @@ export const RunTracker: React.FC<RunTrackerProps> = ({ onRunSaved }) => {
       />
     </View>
   );
-}; 
+};

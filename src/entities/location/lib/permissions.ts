@@ -24,11 +24,11 @@ const verifyIOSLocationAccess = (): Promise<boolean> => {
         // error.code === 1 (PERMISSION_DENIED)만 권한 문제
         resolve(error.code !== 1);
       },
-      { 
+      {
         enableHighAccuracy: false,
         timeout: 2000,
-        maximumAge: 60000 // 1분간 캐시된 위치도 허용
-      }
+        maximumAge: 60000, // 1분간 캐시된 위치도 허용
+      },
     );
   });
 };
@@ -47,9 +47,9 @@ export const requestLocationPermission = async (): Promise<LocationPermission> =
           buttonNeutral: '나중에',
           buttonNegative: '취소',
           buttonPositive: '허용',
-        }
+        },
       );
-      
+
       return {
         granted: granted === PermissionsAndroid.RESULTS.GRANTED,
         canAskAgain: granted !== PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN,
@@ -60,17 +60,17 @@ export const requestLocationPermission = async (): Promise<LocationPermission> =
       return { granted: false, canAskAgain: true, blocked: false };
     }
   }
-  
+
   // iOS 위치 권한 요청
   if (Platform.OS === 'ios') {
     try {
       const authorizationStatus = await Geolocation.requestAuthorization('whenInUse');
       console.log('iOS requestAuthorization result:', authorizationStatus);
-      
+
       switch (authorizationStatus) {
         case 'granted':
           return { granted: true, canAskAgain: false, blocked: false };
-          
+
         case 'denied':
           // denied 상태일 때는 실제 위치 요청으로 Never인지 확인
           const canAccess = await verifyIOSLocationAccess();
@@ -80,15 +80,15 @@ export const requestLocationPermission = async (): Promise<LocationPermission> =
           }
           // 위치는 접근 가능하지만 권한은 denied면 재요청 가능한 상태
           return { granted: false, canAskAgain: true, blocked: false };
-          
+
         case 'disabled':
           // 위치 서비스 자체가 꺼진 상태
           return { granted: false, canAskAgain: false, blocked: true };
-          
+
         case 'restricted':
           // 제한된 상태 (부모 제어 등)
           return { granted: false, canAskAgain: false, blocked: true };
-          
+
         default:
           return { granted: false, canAskAgain: true, blocked: false };
       }
@@ -97,7 +97,7 @@ export const requestLocationPermission = async (): Promise<LocationPermission> =
       return { granted: false, canAskAgain: true, blocked: false };
     }
   }
-  
+
   return { granted: false, canAskAgain: false, blocked: false };
 };
 
@@ -108,9 +108,9 @@ export const checkLocationPermission = async (): Promise<LocationPermission> => 
   if (Platform.OS === 'android') {
     try {
       const hasPermission = await PermissionsAndroid.check(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       );
-      
+
       return {
         granted: hasPermission,
         canAskAgain: true, // Android에서는 일반적으로 재요청 가능
@@ -121,18 +121,18 @@ export const checkLocationPermission = async (): Promise<LocationPermission> => 
       return { granted: false, canAskAgain: true, blocked: false };
     }
   }
-  
+
   // iOS 위치 권한 확인
   if (Platform.OS === 'ios') {
     try {
       // requestAuthorization은 이미 권한이 있으면 현재 상태를 반환하고 다이얼로그를 표시하지 않음
       const authorizationStatus = await Geolocation.requestAuthorization('whenInUse');
       console.log('iOS checkLocationPermission result:', authorizationStatus);
-      
+
       switch (authorizationStatus) {
         case 'granted':
           return { granted: true, canAskAgain: false, blocked: false };
-          
+
         case 'denied':
           // denied 상태일 때는 실제 위치 요청으로 Never인지 확인
           const canAccess = await verifyIOSLocationAccess();
@@ -142,15 +142,15 @@ export const checkLocationPermission = async (): Promise<LocationPermission> => 
           }
           // 위치는 접근 가능하지만 권한은 denied면 재요청 가능한 상태
           return { granted: false, canAskAgain: true, blocked: false };
-          
+
         case 'disabled':
           // 위치 서비스 자체가 꺼진 상태
           return { granted: false, canAskAgain: false, blocked: true };
-          
+
         case 'restricted':
           // 제한된 상태 (부모 제어 등)
           return { granted: false, canAskAgain: false, blocked: true };
-          
+
         default:
           return { granted: false, canAskAgain: true, blocked: false };
       }
@@ -159,6 +159,6 @@ export const checkLocationPermission = async (): Promise<LocationPermission> => 
       return { granted: false, canAskAgain: true, blocked: false };
     }
   }
-  
+
   return { granted: false, canAskAgain: false, blocked: false };
-}; 
+};

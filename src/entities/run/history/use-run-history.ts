@@ -40,8 +40,8 @@ export function useRunHistory(options: UseRunHistoryOptions = {}): UseRunHistory
         setRuns(newRuns);
         setOffset(newRuns.length);
       } else {
-        setRuns(prev => [...prev, ...newRuns]);
-        setOffset(prev => prev + newRuns.length);
+        setRuns((prev) => [...prev, ...newRuns]);
+        setOffset((prev) => prev + newRuns.length);
       }
 
       // 더 이상 로드할 데이터가 없는지 확인
@@ -72,9 +72,9 @@ export function useRunHistory(options: UseRunHistoryOptions = {}): UseRunHistory
     try {
       setError(null);
       await runApi.deleteRun(id);
-      
+
       // 로컬 상태에서 제거
-      setRuns(prev => prev.filter(run => run.id !== id));
+      setRuns((prev) => prev.filter((run) => run.id !== id));
     } catch (err) {
       console.error('러닝 기록 삭제 실패:', err);
       setError('러닝 기록 삭제에 실패했습니다.');
@@ -99,4 +99,4 @@ export function useRunHistory(options: UseRunHistoryOptions = {}): UseRunHistory
     refreshRuns,
     deleteRun,
   };
-} 
+}

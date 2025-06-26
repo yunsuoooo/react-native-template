@@ -21,14 +21,14 @@ interface UseRunTrackerReturn {
   currentLocation: LocationPoint | null;
   routePoints: LocationPoint[];
   stats: RunStats;
-  
+
   // 액션
   startTracking: () => void;
   pauseTracking: () => void;
   resumeTracking: () => void;
   stopTracking: () => Promise<void>;
   resetTracking: () => void;
-  
+
   // 추가 정보
   error: string | null;
 }
@@ -59,11 +59,11 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
   const [currentLocation, setCurrentLocation] = useState<LocationPoint | null>(null);
   const [routePoints, setRoutePoints] = useState<LocationPoint[]>([]);
   const [error, setError] = useState<string | null>(null);
-  
+
   // 위치 추적 관련 ref들
   const watchIdRef = useRef<number | null>(null);
   const lastValidStatsRef = useRef<RouteStatsOnly>(createInitialStats());
-  
+
   // 마지막 계산한 포인트의 timestamp 저장
   const lastCalculatedTimestampRef = useRef<string | null>(null);
 
@@ -83,7 +83,7 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
     setCurrentLocation(newPoint);
 
     // 위치는 항상 경로에 추가 (일시정지 여부와 관계없이)
-    setRoutePoints(prev => {
+    setRoutePoints((prev) => {
       // 첫 번째 포인트는 무조건 추가
       if (prev.length === 0) {
         return [newPoint];
@@ -92,10 +92,10 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
       // 일시정지 중이 아닐 때만 거리 기반 필터링 적용
       if (!timer.isPaused) {
         // 마지막 활성(non-paused) 포인트와의 거리 계산
-        const lastActivePoint = prev.slice().reverse().find(p => !p.isPaused);
+        const lastActivePoint = prev.slice().reverse().find((p) => !p.isPaused);
         if (lastActivePoint) {
           const distance = getDistance(lastActivePoint, newPoint);
-          
+
           // 최소 거리 이상 움직였을 때만 추가
           if (distance < minDistance) {
             return prev;
@@ -110,7 +110,7 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
   // 위치 추적 시작
   const startTracking = () => {
     setError(null);
-    
+
     const watchId = Geolocation.watchPosition(
       handleNewLocation,
       (err) => {
@@ -122,12 +122,12 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
         interval: updateInterval,
         fastestInterval: 1000,
         distanceFilter: 1, // 1미터마다 업데이트
-      }
+      },
     );
 
     watchIdRef.current = watchId;
     setIsTracking(true);
-    
+
     // 타이머 시작
     timer.start();
   };
@@ -157,9 +157,9 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
     if (routePoints.length > 1) {
       try {
         const endTime = new Date();
-        
+
         // 총 거리 계산 (일시정지된 포인트 제외)
-        const activePoints = routePoints.filter(point => !point.isPaused);
+        const activePoints = routePoints.filter((point) => !point.isPaused);
         let totalDistance = 0;
         for (let i = 1; i < activePoints.length; i++) {
           totalDistance += getDistance(activePoints[i - 1], activePoints[i]);
@@ -176,7 +176,7 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
 
         await runApi.createRun(runData);
         console.log('러닝 데이터 저장 완료');
-        
+
         // 상태 초기화
         resetTracking();
       } catch (err) {
@@ -192,10 +192,10 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
     setRoutePoints([]);
     setError(null);
     timer.reset();
-    
+
     // 통계 ref 초기화
     lastValidStatsRef.current = createInitialStats();
-    
+
     // 마지막 계산한 포인트의 timestamp 초기화
     lastCalculatedTimestampRef.current = null;
   };
@@ -208,8 +208,8 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
     }
 
     // 일시정지되지 않은 포인트들만 필터링
-    const activePoints = routePoints.filter(point => !point.isPaused);
-    
+    const activePoints = routePoints.filter((point) => !point.isPaused);
+
     if (activePoints.length < 2) {
       const initialStats = createInitialStats();
       lastValidStatsRef.current = initialStats;
@@ -220,7 +220,7 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
 
     // 새로운 포인트가 추가되었는지 확인
     if (lastCalculatedTimestampRef.current && activePoints.length > 0) {
-      const lastCalculatedIndex = activePoints.findIndex(p => p.timestamp === lastCalculatedTimestampRef.current);
+      const lastCalculatedIndex = activePoints.findIndex((p) => p.timestamp === lastCalculatedTimestampRef.current);
       // 마지막 계산한 포인트가 현재 마지막 포인트와 같으면 새로운 포인트가 없음
       if (lastCalculatedIndex === activePoints.length - 1) {
         return lastValidStatsRef.current;
@@ -233,13 +233,13 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
     let maxSpeed = prevStats.maxSpeed;
     let elevationGain = prevStats.elevationGain || 0;
     let elevationLoss = prevStats.elevationLoss || 0;
-    
+
     // 마지막 고도는 이전에 계산된 포인트의 마지막 고도
     let lastElevation = 0;
     let startIndex = 1;
-    
+
     if (lastCalculatedTimestampRef.current) {
-      const lastCalculatedIndex = activePoints.findIndex(p => p.timestamp === lastCalculatedTimestampRef.current);
+      const lastCalculatedIndex = activePoints.findIndex((p) => p.timestamp === lastCalculatedTimestampRef.current);
       if (lastCalculatedIndex >= 0) {
         const lastCalculatedPoint = activePoints[lastCalculatedIndex];
         lastElevation = lastCalculatedPoint?.altitude || 0;
@@ -254,11 +254,11 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
     for (let i = startIndex; i < activePoints.length; i++) {
       const prev = activePoints[i - 1];
       const curr = activePoints[i];
-      
+
       // 이전 포인트가 마지막 계산된 포인트와 연속적인지 확인
       const prevTimestamp = new Date(prev.timestamp).getTime();
       const currTimestamp = new Date(curr.timestamp).getTime();
-      
+
       // 마지막 계산한 포인트와 현재 prev가 다르고, 그 사이에 시간 간격이 크면 새로운 구간으로 취급
       let shouldCalculateDistance = true;
       if (lastCalculatedTimestampRef.current) {
@@ -268,12 +268,12 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
           shouldCalculateDistance = false; // 첫 번째 포인트는 거리 계산 안함
         }
       }
-      
+
       if (shouldCalculateDistance) {
         // 거리 계산
         const segmentDistance = getDistance(prev, curr);
         totalDistance += segmentDistance;
-        
+
         // 속도 계산 (시간 차이가 있는 경우)
         const timeDiff = (currTimestamp - prevTimestamp) / 1000;
         if (timeDiff > 0) {
@@ -281,7 +281,7 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
           maxSpeed = Math.max(maxSpeed, segmentSpeed);
         }
       }
-      
+
       // 고도 변화 계산 (연속성과 관계없이 수행)
       if (curr.altitude !== undefined && lastElevation !== undefined) {
         const elevationDiff = curr.altitude - lastElevation;
@@ -340,15 +340,15 @@ export function useRunTracker(options: UseRunTrackerOptions = {}): UseRunTracker
     currentLocation,
     routePoints,
     stats,
-    
+
     // 액션
     startTracking,
     pauseTracking,
     resumeTracking,
     stopTracking,
     resetTracking,
-    
+
     // 추가 정보
     error,
   };
-} 
+}

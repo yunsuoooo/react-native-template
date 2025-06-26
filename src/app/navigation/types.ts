@@ -6,7 +6,7 @@ export type RootStackParamList = {
   // 메인 네비게이터들
   [ROUTES.MAIN]: undefined;
   [ROUTES.TAB_NAVIGATOR]: undefined;
-  
+
   // 개별 스크린들
   [ROUTES.HOME]: undefined;
   [ROUTES.SETTINGS]: undefined;

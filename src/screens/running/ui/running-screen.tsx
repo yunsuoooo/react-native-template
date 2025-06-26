@@ -22,12 +22,12 @@ export const RunningScreen = () => {
 
   return (
     <ScreenLayout>
-      <View className='w-full px-4'>
+      <View className="w-full px-4">
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name='chevron-left' size={24} color='black' />
+          <Icon name="chevron-left" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      
+
       <RunTracker />
 
       <PermissionChecker
@@ -38,4 +38,4 @@ export const RunningScreen = () => {
       />
     </ScreenLayout>
   );
-}; 
+};

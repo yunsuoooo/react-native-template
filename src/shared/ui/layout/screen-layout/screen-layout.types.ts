@@ -7,4 +7,4 @@ export interface ScreenLayoutProps extends ViewProps {
   withTabBar?: boolean;
   backgroundColor?: string;
   className?: string;
-} 
+}

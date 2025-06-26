@@ -15,7 +15,7 @@ export const RunTrackerStats: React.FC<RunTrackerStatsProps> = ({
   showMilliseconds = true,
 }) => {
   const formatTime = showMilliseconds ? formatDurationWithMs : formatDuration;
-  
+
   return (
     <View className={`bg-gray-50 rounded-lg p-6 ${className}`}>
       {/* 메인 통계 */}
@@ -26,7 +26,7 @@ export const RunTrackerStats: React.FC<RunTrackerStatsProps> = ({
             {formatDistance(stats.distance)}
           </Text>
         </View>
-        
+
         <View className="items-center flex-1">
           <Text className="text-sm text-gray-600">러닝 시간</Text>
           <Text className="text-xl font-bold text-green-600">
@@ -39,7 +39,7 @@ export const RunTrackerStats: React.FC<RunTrackerStatsProps> = ({
             </Text>
           )}
         </View>
-        
+
         <View className="items-center flex-1">
           <Text className="text-sm text-gray-600">페이스</Text>
           <Text className="text-xl font-bold text-purple-600">
@@ -56,14 +56,14 @@ export const RunTrackerStats: React.FC<RunTrackerStatsProps> = ({
             {formatSpeed(stats.speed)}
           </Text>
         </View>
-        
+
         <View className="items-center flex-1">
           <Text className="text-xs text-gray-500">칼로리</Text>
           <Text className="text-sm font-medium text-gray-700">
             {stats.calories || 0} kcal
           </Text>
         </View>
-        
+
         <View className="items-center flex-1">
           <Text className="text-xs text-gray-500">고도 변화</Text>
           <Text className="text-sm font-medium text-gray-700">
@@ -71,7 +71,7 @@ export const RunTrackerStats: React.FC<RunTrackerStatsProps> = ({
           </Text>
         </View>
       </View>
-      
+
       {/* 시간 상세 정보 (휴식 시간이 있을 때만 표시) */}
       {stats.totalElapsedTime > stats.duration && (
         <View className="mt-4 pt-3 border-t border-gray-100">
@@ -100,4 +100,4 @@ export const RunTrackerStats: React.FC<RunTrackerStatsProps> = ({
       )}
     </View>
   );
-}; 
+};

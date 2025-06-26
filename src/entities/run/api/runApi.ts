@@ -1,11 +1,11 @@
 import { supabase } from '@/shared/config';
-import type { 
-  Run, 
+import type {
+  Run,
   CreateRunData,
   UpdateRunData,
   UserRunStats,
   MonthlyRunStats,
-  PersonalBests 
+  PersonalBests,
 } from '../model/types';
 import { calculateRunStats } from '../lib/utils';
 
@@ -15,7 +15,7 @@ import { calculateRunStats } from '../lib/utils';
 export async function saveRun(runData: Omit<Run, 'id' | 'user_id' | 'created_at'>) {
   try {
     const { data: { user } } = await supabase.auth.getUser();
-    
+
     if (!user) {
       throw new Error('User not authenticated');
     }
@@ -46,7 +46,7 @@ export async function saveRun(runData: Omit<Run, 'id' | 'user_id' | 'created_at'
 export async function fetchUserRuns(limit = 20): Promise<{ success: boolean; data?: Run[]; error?: any }> {
   try {
     const { data: { user } } = await supabase.auth.getUser();
-    
+
     if (!user) {
       throw new Error('User not authenticated');
     }
@@ -75,7 +75,7 @@ export async function fetchUserRuns(limit = 20): Promise<{ success: boolean; dat
 export async function fetchRunById(id: string): Promise<{ success: boolean; data?: Run; error?: any }> {
   try {
     const { data: { user } } = await supabase.auth.getUser();
-    
+
     if (!user) {
       throw new Error('User not authenticated');
     }
@@ -104,7 +104,7 @@ export async function fetchRunById(id: string): Promise<{ success: boolean; data
 export async function deleteRun(id: string): Promise<{ success: boolean; error?: any }> {
   try {
     const { data: { user } } = await supabase.auth.getUser();
-    
+
     if (!user) {
       throw new Error('User not authenticated');
     }
@@ -130,9 +130,9 @@ export const runApi = {
   // 러닝 기록 생성
   async createRun(data: CreateRunData): Promise<Run> {
     // 일시정지된 포인트 제외하고 통계 계산
-    const activePoints = data.route_json.filter(point => !point.isPaused);
+    const activePoints = data.route_json.filter((point) => !point.isPaused);
     const stats = calculateRunStats(activePoints, data.duration_ms);
-    
+
     const runData = {
       ...data,
       total_points: data.route_json.length, // 전체 포인트 수 (일시정지 포함)
@@ -187,7 +187,7 @@ export const runApi = {
     let updateData = { ...updates };
     if (updates.route_json && updates.duration_ms) {
       // 일시정지된 포인트 제외하고 통계 계산
-      const activePoints = updates.route_json.filter(point => !point.isPaused);
+      const activePoints = updates.route_json.filter((point) => !point.isPaused);
       const stats = calculateRunStats(activePoints, updates.duration_ms);
       updateData = {
         ...updateData,
@@ -324,4 +324,4 @@ export const runApi = {
     if (error) throw error;
     return data || [];
   },
-}; 
+};

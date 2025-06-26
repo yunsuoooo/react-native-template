@@ -67,7 +67,7 @@ export const RunTrackerControls: React.FC<RunTrackerControlsProps> = ({
               </Text>
             </TouchableOpacity>
           )}
-          
+
           {/* 상태 표시 */}
           <View className="flex-1 py-3 px-4 rounded-lg bg-gray-200 justify-center">
             <Text className="text-gray-700 text-center font-semibold">
@@ -90,4 +90,4 @@ export const RunTrackerControls: React.FC<RunTrackerControlsProps> = ({
       )}
     </View>
   );
-}; 
+};

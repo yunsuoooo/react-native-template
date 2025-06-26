@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { 
-  formatDistance, 
-  formatDuration, 
-  formatPace, 
+import {
+  formatDistance,
+  formatDuration,
+  formatPace,
   formatSpeed,
-  getRunTypeLabel
+  getRunTypeLabel,
 } from '@/entities/run';
 import type { Run } from '@/entities/run';
 
@@ -33,7 +33,7 @@ export const RunHistoryItem: React.FC<RunHistoryItemProps> = ({
   };
 
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       onPress={handlePress}
       className={`bg-white rounded-lg p-4 mb-3 shadow-sm border border-gray-200 ${className}`}
     >
@@ -51,15 +51,15 @@ export const RunHistoryItem: React.FC<RunHistoryItemProps> = ({
             </View>
           </View>
           <Text className="text-sm text-gray-500">
-            {runDate.toLocaleDateString('ko-KR')} {runDate.toLocaleTimeString('ko-KR', { 
-              hour: '2-digit', 
-              minute: '2-digit' 
+            {runDate.toLocaleDateString('ko-KR')} {runDate.toLocaleTimeString('ko-KR', {
+              hour: '2-digit',
+              minute: '2-digit',
             })}
           </Text>
         </View>
-        
+
         {onDelete && (
-          <TouchableOpacity 
+          <TouchableOpacity
             onPress={handleDelete}
             className="p-2 -m-2"
           >
@@ -76,21 +76,21 @@ export const RunHistoryItem: React.FC<RunHistoryItemProps> = ({
             {formatDuration(run.duration_ms)}
           </Text>
         </View>
-        
+
         <View className="flex-1">
           <Text className="text-xs text-gray-400">페이스</Text>
           <Text className="text-sm font-medium text-gray-700">
             {run.avg_pace_s_per_km ? formatPace(run.avg_pace_s_per_km) : '--:--'}
           </Text>
         </View>
-        
+
         <View className="flex-1">
           <Text className="text-xs text-gray-400">속도</Text>
           <Text className="text-sm font-medium text-gray-700">
             {run.avg_speed_ms ? formatSpeed(run.avg_speed_ms) : '0 km/h'}
           </Text>
         </View>
-        
+
         <View className="flex-1">
           <Text className="text-xs text-gray-400">칼로리</Text>
           <Text className="text-sm font-medium text-gray-700">
@@ -116,4 +116,4 @@ export const RunHistoryItem: React.FC<RunHistoryItemProps> = ({
       )}
     </TouchableOpacity>
   );
-}; 
+};

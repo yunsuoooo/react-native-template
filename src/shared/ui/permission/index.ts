@@ -1,1 +1,1 @@
-export { PermissionChecker } from './permission-checker'; 
+export { PermissionChecker } from './permission-checker';

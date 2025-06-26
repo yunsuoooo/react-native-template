@@ -8,17 +8,17 @@ import type { LocationPoint } from '../model/types';
  */
 export function getDistance(point1: LocationPoint, point2: LocationPoint): number {
   const R = 6371e3; // 지구 반지름 (미터)
-  
+
   const lat1Rad = (point1.latitude * Math.PI) / 180;
   const lat2Rad = (point2.latitude * Math.PI) / 180;
   const deltaLatRad = ((point2.latitude - point1.latitude) * Math.PI) / 180;
   const deltaLngRad = ((point2.longitude - point1.longitude) * Math.PI) / 180;
 
-  const a = 
+  const a =
     Math.sin(deltaLatRad / 2) * Math.sin(deltaLatRad / 2) +
     Math.cos(lat1Rad) * Math.cos(lat2Rad) *
     Math.sin(deltaLngRad / 2) * Math.sin(deltaLngRad / 2);
-  
+
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   return R * c; // 거리 (미터)
@@ -52,7 +52,7 @@ export function getBearing(point1: LocationPoint, point2: LocationPoint): number
   const deltaLngRad = ((point2.longitude - point1.longitude) * Math.PI) / 180;
 
   const y = Math.sin(deltaLngRad) * Math.cos(lat2Rad);
-  const x = Math.cos(lat1Rad) * Math.sin(lat2Rad) - 
+  const x = Math.cos(lat1Rad) * Math.sin(lat2Rad) -
            Math.sin(lat1Rad) * Math.cos(lat2Rad) * Math.cos(deltaLngRad);
 
   const bearingRad = Math.atan2(y, x);
@@ -66,4 +66,4 @@ export function getBearing(point1: LocationPoint, point2: LocationPoint): number
  */
 export function getDistanceBetweenPoints(point1: LocationPoint, point2: LocationPoint): number {
   return getDistance(point1, point2);
-} 
+}

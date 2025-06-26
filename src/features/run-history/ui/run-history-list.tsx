@@ -1,12 +1,12 @@
 import React from 'react';
-import { 
-  View, 
-  Text, 
-  FlatList, 
-  RefreshControl, 
-  ActivityIndicator, 
+import {
+  View,
+  Text,
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import { useRunHistory } from '@/entities/run';
 import { RunHistoryItem } from './run-history-item';
@@ -40,8 +40,8 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({
       '이 러닝 기록을 삭제하시겠습니까?',
       [
         { text: '취소', style: 'cancel' },
-        { 
-          text: '삭제', 
+        {
+          text: '삭제',
           style: 'destructive',
           onPress: async () => {
             try {
@@ -49,9 +49,9 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({
             } catch (err) {
               Alert.alert('오류', '삭제에 실패했습니다.');
             }
-          }
+          },
         },
-      ]
+      ],
     );
   };
 
@@ -88,7 +88,7 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({
 
   const renderFooter = () => {
     if (!hasMore) return null;
-    
+
     return (
       <View className="py-4">
         <ActivityIndicator size="small" color="#3B82F6" />
@@ -140,4 +140,4 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({
       />
     </View>
   );
-}; 
+};

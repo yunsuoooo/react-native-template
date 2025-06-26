@@ -19,4 +19,4 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 
 // 데이터베이스 타입들은 entities에서 가져옵니다
 export type { Run, CreateRunData } from '@/entities/run';
-export type { LocationPoint } from '@/entities/location'; 
+export type { LocationPoint } from '@/entities/location';

@@ -20,10 +20,10 @@ export const RunHistoryScreen = () => {
       </View>
 
       {/* 러닝 기록 리스트 */}
-      <RunHistoryList 
-        onRunPress={handleRunPress} 
+      <RunHistoryList
+        onRunPress={handleRunPress}
         className="p-4"
       />
     </View>
   );
-}; 
+};

@@ -10,7 +10,7 @@ interface UseTimerReturn {
   isPaused: boolean;
   elapsedTime: number; // 실제 경과 시간 (일시정지 시간 제외)
   totalElapsedTime: number; // 전체 경과 시간 (일시정지 시간 포함)
-  
+
   // 액션
   start: () => void;
   pause: () => void;
@@ -39,12 +39,10 @@ export function useTimer(options: UseTimerOptions = {}): UseTimerReturn {
 
     const now = new Date().getTime();
     const totalElapsed = now - startTimeRef.current.getTime();
-    
+
     // 현재 일시정지 중인 시간 계산
-    const currentPausedTime = pauseStartTimeRef.current 
-      ? now - pauseStartTimeRef.current.getTime() 
-      : 0;
-    
+    const currentPausedTime = pauseStartTimeRef.current ? now - pauseStartTimeRef.current.getTime() : 0;
+
     // 실제 경과 시간 = 전체 경과 시간 - 총 일시정지 시간 - 현재 일시정지 시간
     const actualElapsed = totalElapsed - totalPausedTimeRef.current - currentPausedTime;
     setElapsedTime(Math.max(0, actualElapsed));
@@ -123,7 +121,7 @@ export function useTimer(options: UseTimerOptions = {}): UseTimerReturn {
   // 전체 경과 시간 계산
   const totalElapsedTime = (() => {
     if (!startTimeRef.current) return 0;
-    
+
     const now = new Date().getTime();
     return Math.max(0, now - startTimeRef.current.getTime());
   })();
@@ -143,7 +141,7 @@ export function useTimer(options: UseTimerOptions = {}): UseTimerReturn {
     isPaused,
     elapsedTime,
     totalElapsedTime,
-    
+
     // 액션
     start,
     pause,
@@ -151,4 +149,4 @@ export function useTimer(options: UseTimerOptions = {}): UseTimerReturn {
     stop,
     reset,
   };
-} 
+}
