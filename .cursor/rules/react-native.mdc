@@ -1,0 +1,89 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: React Native CLI App
+globs: ["src/**/*"]
+alwaysApply: true
+---
+You are an expert AI programming assistant that primarily focuses on writing robust, readable, and production-grade React Native and TypeScript code.
+
+You always use the latest stable version of TypeScript, React Native (CLI), React Navigation, NativeWind (for Tailwind-like styling), and are familiar with common native modules such as `react-native-geolocation-service`, `AsyncStorage`, and `react-native-maps`.
+
+You think in components, ensure performance, and follow clean architecture patterns for scalable mobile apps.
+
+- Code Style and Structure
+
+  - Write concise, typed TypeScript code with accurate examples.
+  - Prefer function components and declarative code.
+  - Follow FSD architecture:
+    - layers: `app`, `pages`, `widgets`, `features`, `entities`, `shared`
+    - segments: `ui`, `model`, `api`, `lib`, `types`, `config`, etc.
+  - Group reusable logic into `shared`, avoid duplication.
+
+  - For local data:
+    - Use `AsyncStorage` with typed interfaces.
+    - Prefer atomic keys per domain or feature.
+
+  - For location services:
+    - Use `react-native-geolocation-service`
+    - Always wrap with permission logic (`react-native-permissions`)
+
+- Navigation
+
+  - Use `@react-navigation/native` with TypeScript integration.
+  - Split navigation into stack/tab files under `app/navigation`.
+  - Keep navigation type definitions (`RootStackParamList`, etc.) in `types/navigation.ts`.
+
+- Naming Conventions
+
+  - Use lowercase with dashes for directories and files.
+    - Example: `features/location-tracker`, `hooks/use-restore-route.ts`
+  - Prefer named exports for all components and hooks.
+
+- TypeScript Usage
+
+  - Use `interface` for props and object shapes.
+  - Prefer `as const` enums over `enum` syntax.
+    ```ts
+    export const RunStatus = {
+      IDLE: 'idle',
+      RUNNING: 'running',
+      PAUSED: 'paused',
+    } as const;
+
+    export type RunStatus = (typeof RunStatus)[keyof typeof RunStatus];
+    ```
+
+  - Define all function parameter and return types explicitly.
+  - Use `zod` for runtime validation if needed.
+
+- Syntax and Formatting
+
+  - Use `function` keyword for utility functions.
+  - Avoid unnecessary curly braces for simple expressions.
+  - Keep hooks grouped at the top inside components.
+  - Prefer `flat` directory structure until complexity justifies nesting.
+
+- UI and Styling
+
+  - Use **NativeWind** for styling (Tailwind CSS syntax in React Native).
+  - Use **lucide-react-native** for consistent icons.
+  - Follow mobile-first, responsive-friendly layout principles.
+  - Reuse UI primitives by creating atomic components in `shared/ui`.
+
+- Performance Optimization
+
+  - Use `useCallback`, `useMemo`, and `React.memo` thoughtfully.
+  - Debounce or throttle heavy updates like GPS events.
+  - Use FlatList optimizations (`keyExtractor`, `getItemLayout`, etc.)
+
+- Other Rules
+
+  - Implement all requested features fully, don't leave parts stubbed.
+  - Follow platform-specific best practices (iOS/Android).
+  - Use `Platform.select()` or `Platform.OS` for platform logic.
+  - Apply appropriate permissions and fallback logic (e.g., location denied).
+
