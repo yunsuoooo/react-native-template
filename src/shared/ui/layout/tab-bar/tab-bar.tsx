@@ -1,11 +1,5 @@
-import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  Easing,
-} from 'react-native-reanimated';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, Animated, Easing } from 'react-native';
 import { Icon } from '@shared/ui/icon';
 import { ROUTES } from '@/app/navigation/routes';
 
@@ -18,24 +12,22 @@ export interface TabBarProps {
 export const TabBar = ({ state, navigation }: TabBarProps) => {
   const isRunScreen = state.routes[state.index].name === ROUTES.TAB_RUN;
 
-  const leftMenuBottomPosition = useSharedValue(0);
-
-  const tabBarAnimatedStyle = useAnimatedStyle(() => ({
-    bottom: leftMenuBottomPosition.value,
-  }));
+  const leftMenuBottomPosition = useRef(new Animated.Value(24)).current;
 
   useEffect(() => {
-    leftMenuBottomPosition.value = withTiming(
-      isRunScreen ? -100 : 24,
-      {
-        duration: 300,
-        easing: Easing.out(Easing.cubic),
-      },
-    );
+    Animated.timing(leftMenuBottomPosition, {
+      toValue: isRunScreen ? -100 : 24,
+      duration: 300,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: false, // bottom 속성은 layout 관련이므로 false
+    }).start();
   }, [isRunScreen, leftMenuBottomPosition]);
 
   return (
-    <Animated.View className="absolute left-0 right-0" style={[tabBarAnimatedStyle]}>
+    <Animated.View
+      className="absolute left-0 right-0"
+      style={[{ bottom: leftMenuBottomPosition }]}
+    >
       <View className="relative">
         <View
           className="absolute left-6 bottom-0"
