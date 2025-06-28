@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Icon } from '../../../shared/ui/icon';
+import { Icon } from '@/shared/ui/icon';
 
 const SettingScreen = () => {
   const navigation = useNavigation();

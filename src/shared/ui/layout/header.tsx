@@ -21,7 +21,7 @@ const Header = () => {
           <Text>home</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {}}>
-          <Icon name="edit" size={20} className="text-zinc-600" />
+          <Icon name="megaphone" size={20} className="text-zinc-600" />
         </TouchableOpacity>
       </View>
     </View>
