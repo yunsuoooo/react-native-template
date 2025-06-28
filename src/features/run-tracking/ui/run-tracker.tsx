@@ -1,8 +1,10 @@
-import React from 'react';
-import { View, Text, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Alert, TouchableOpacity } from 'react-native';
 import { useRunTracker } from '@/entities/run';
 import { RunTrackerStats } from './run-tracker-stats';
 import { RunTrackerControls } from './run-tracker-controls';
+import { RunTrackingMap } from '@/features/map';
+import { Icon } from '@/shared/ui/icon';
 import { LocationPoint } from '@/entities/location';
 
 interface CurrentLocationDisplayProps {
@@ -74,6 +76,8 @@ interface RunTrackerProps {
 }
 
 export const RunTracker: React.FC<RunTrackerProps> = ({ onRunSaved }) => {
+  const [showMap, setShowMap] = useState(true);
+
   const {
     isTracking,
     isPaused,
@@ -115,33 +119,70 @@ export const RunTracker: React.FC<RunTrackerProps> = ({ onRunSaved }) => {
   };
 
   return (
-    <View className="flex-1 p-4">
-      {/* 러닝 통계 */}
-      <View className="my-6">
-        <RunTrackerStats stats={stats} />
+    <View className="flex-1">
+      {/* 맵 또는 통계 표시 영역 */}
+      <View className="flex-1">
+        {showMap ? (
+          <RunTrackingMap
+            route={routePoints}
+            currentLocation={currentLocation}
+            isTracking={isTracking}
+            followUser={isTracking && !isPaused}
+            className="flex-1"
+          />
+        ) : (
+          <View className="flex-1 p-4">
+            {/* 현재 위치 표시 */}
+            <CurrentLocationDisplay location={currentLocation} />
+
+            {/* 디버그 정보 */}
+            <DebugInfo
+              isTracking={isTracking}
+              isPaused={isPaused}
+              routePointsCount={routePoints.length}
+              totalDistance={stats.distance}
+            />
+          </View>
+        )}
       </View>
 
-      {/* 현재 위치 표시 */}
-      <CurrentLocationDisplay location={currentLocation} />
+      {/* 하단 통계 및 컨트롤 영역 */}
+      <View className="bg-white border-t border-gray-200">
+        {/* 맵/정보 토글 버튼 */}
+        <View className="flex-row justify-center py-2">
+          <TouchableOpacity
+            onPress={() => setShowMap(!showMap)}
+            className="flex-row items-center px-4 py-2 bg-gray-100 rounded-full"
+          >
+            <Icon
+              name={showMap ? 'info' : 'map'}
+              size={16}
+              color="#666"
+            />
+            <Text className="ml-2 text-sm text-gray-600">
+              {showMap ? '정보 보기' : '맵 보기'}
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-      {/* 컨트롤 버튼들 */}
-      <RunTrackerControls
-        isTracking={isTracking}
-        isPaused={isPaused}
-        onStart={startTracking}
-        onPause={pauseTracking}
-        onResume={resumeTracking}
-        onStop={handleStopTracking}
-        onReset={handleResetTracking}
-      />
+        {/* 러닝 통계 */}
+        <View className="px-4 py-2">
+          <RunTrackerStats stats={stats} />
+        </View>
 
-      {/* 디버그 정보 */}
-      <DebugInfo
-        isTracking={isTracking}
-        isPaused={isPaused}
-        routePointsCount={routePoints.length}
-        totalDistance={stats.distance}
-      />
+        {/* 컨트롤 버튼들 */}
+        <View className="px-4 pb-4">
+          <RunTrackerControls
+            isTracking={isTracking}
+            isPaused={isPaused}
+            onStart={startTracking}
+            onPause={pauseTracking}
+            onResume={resumeTracking}
+            onStop={handleStopTracking}
+            onReset={handleResetTracking}
+          />
+        </View>
+      </View>
     </View>
   );
 };

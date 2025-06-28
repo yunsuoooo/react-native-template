@@ -7,4 +7,5 @@ export interface Env {
   APP_ENV: 'development' | 'staging' | 'production';
   DEBUG: boolean;
   TIMEOUT: number;
+  GOOGLE_MAPS_API_KEY: string;
 }

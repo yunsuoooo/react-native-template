@@ -17,6 +17,7 @@ const env: Env = {
   APP_ENV: (Config.APP_ENV as Env['APP_ENV']) || 'development',
   DEBUG: Config.DEBUG === 'true',
   TIMEOUT: Number(Config.TIMEOUT) || 5000,
+  GOOGLE_MAPS_API_KEY: Config.GOOGLE_MAPS_API_KEY || 'your_google_maps_api_key_here',
 };
 
 // Log warning in development environment when variables are missing
