@@ -37,9 +37,7 @@ export const PERMISSION_CONFIG: Record<PermissionTypeValue, PermissionConfig> = 
     message: '사진을 저장하거나 불러오기 위해 권한이 필요합니다.',
     ios: PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY,
     android:
-      Number(Platform.Version) >= 33
-        ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
-        : PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+      Number(Platform.Version) >= 33 ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES : PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
   },
   [PermissionType.LOCATION]: {
     type: PermissionType.LOCATION,
@@ -61,9 +59,7 @@ export const PERMISSION_CONFIG: Record<PermissionTypeValue, PermissionConfig> = 
     message: '파일을 저장하기 위해 권한이 필요합니다.',
     ios: PERMISSIONS.IOS.MEDIA_LIBRARY,
     android:
-      Number(Platform.Version) >= 33
-        ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
-        : PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+      Number(Platform.Version) >= 33 ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES : PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
   },
   [PermissionType.CONTACTS]: {
     type: PermissionType.CONTACTS,

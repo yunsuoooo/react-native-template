@@ -29,7 +29,7 @@ export const WebViewScreen = () => {
 
   useEffect(() => {
     initializeWebView();
-  }, []);
+  }, [initializeWebView]);
 
   return <WebViewLayout ref={webviewRef} url={url} initializeWebView={initializeWebView} onMessage={handleMessage} />;
 };

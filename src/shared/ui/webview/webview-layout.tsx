@@ -83,7 +83,7 @@ export const WebViewLayout = ({
     if (ref.current) {
       initializeWebView?.();
     }
-  }, [initializeWebView]);
+  }, [ref, initializeWebView]);
 
   const webViewContent = (
     <WebView
