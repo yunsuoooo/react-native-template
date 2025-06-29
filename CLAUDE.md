@@ -8,8 +8,6 @@ All UI components use **NativeWind** (Tailwind CSS for React Native) for styling
 
 Please follow the conventions below when prompting Cursor or writing code manually.
 
----
-
 ## 📁 Folder Structure (FSD)
 
 src/
@@ -24,13 +22,7 @@ src/
 │ ├── config/ # Constants, env, app config
 │ ├── types/ # Global type declarations
 
-yaml
-Copy
-Edit
-
-Example: `features/run-tracker/model/use-run-tracker.ts`
-
----
+Example: `features/todo/model/use-todo-tracker.ts`
 
 ## ⚙️ Coding Guidelines
 
@@ -46,18 +38,15 @@ Example: `features/run-tracker/model/use-run-tracker.ts`
     RUNNING: 'running',
   } as const;
   export type RunStatus = (typeof RunStatus)[keyof typeof RunStatus];
-🧩 Component Conventions
-All UI must use NativeWind for styling.
+  ```
 
-Reusable primitives like Button, Card, etc. should be placed in shared/ui/.
-
-Use lucide-react-native for icons consistently.
+### 🧩 Component Conventions
+- All UI must use NativeWind for styling.
+- Reusable primitives like Button, Card, etc. should be placed in shared/ui/.
+- Use lucide-react-native for icons consistently.
 
 Example:
-
-tsx
-Copy
-Edit
+```tsx
 export function Button({ children, onPress }: ButtonProps) {
   return (
     <TouchableOpacity
@@ -70,59 +59,77 @@ export function Button({ children, onPress }: ButtonProps) {
     </TouchableOpacity>
   );
 }
-📍 Native Features
-Use react-native-geolocation-service for GPS/location tracking.
+```
 
-Use @react-native-async-storage/async-storage for local storage.
+### 🧱 Naming Conventions
+- Use kebab-case for all folder and file names.
+- Use descriptive names for components and hooks:
+- Examples: use-user-session.ts, todo-tracker.model.ts, auth-button.tsx
+- Prefer named exports for all components.
 
-Use react-native-permissions to handle OS-level permissions.
-
-🧱 Naming Conventions
-Use kebab-case for all folder and file names.
-
-Use descriptive names for components and hooks:
-
-Examples: use-user-session.ts, run-tracker.model.ts, auth-button.tsx
-
-Prefer named exports for all components.
-
-🚫 Anti-patterns
+### 🚫 Anti-patterns
 Avoid the following:
+- enum, any, and React.FC
+- Class components
+- Using StyleSheet.create() – always use NativeWind classes instead
+- Duplicated state or logic – reuse via shared/lib, shared/ui, etc.
 
-enum, any, and React.FC
-
-Class components
-
-Using StyleSheet.create() – always use NativeWind classes instead
-
-Duplicated state or logic – reuse via shared/lib, shared/ui, etc.
-
-📦 Cursor Prompt Template
+## 📦 Cursor Prompt Template
 When writing prompts to Cursor, use clear and consistent instructions:
-
-txt
-Copy
-Edit
-- Build a feature under features/run-tracker with model, ui, and lib
+- Build a feature under features/todo-tracker with model, ui, and lib
 - Style all components using NativeWind
 - Follow FSD architecture
 - Reuse types and utilities from shared
 - Avoid enums; use const object pattern instead
 - Define all function and component types explicitly
-📱 UI Design Principles
-This is a mobile-first app – use flex, gap, px, py, etc. via NativeWind
 
-No responsive web breakpoints; UI adapts via mobile layouts
+## 📱 UI Design Principles
+- This is a mobile-first app – use flex, gap, px, py, etc. via NativeWind
+- No responsive web breakpoints; UI adapts via mobile layouts
+- Use Platform.OS or useWindowDimensions for platform- or device-specific behavior
 
-Use Platform.OS or useWindowDimensions for platform- or device-specific behavior
+## ✅ Summary
+- Type-safe, modular, and clean React Native code
+- Tailwind-style styling via NativeWind
+- FSD-based architecture with domain boundaries
+- Mobile-focused UI design
+- Update this file as the project evolves or if conventions are adjusted. Let’s keep code clean, consistent, and scalable 🚀
 
-✅ Summary
-Type-safe, modular, and clean React Native code
 
-Tailwind-style styling via NativeWind
+## ✅ Commit Message Convention
 
-FSD-based architecture with domain boundaries
+### Types:
 
-Mobile-focused UI design
+- feat: new feature
+- fix: bug fix
+- refactor: code refactor (no feature change)
+- style: UI updates or styling
+- chore: build script, config, non-code files
+- docs: documentation only
+- test: add or update tests
 
-Update this file as the project evolves or if conventions are adjusted. Let’s keep code clean, consistent, and scalable 🚀
+### Examples:
+
+- feat: implement location point filtering by 5 meters
+- fix: correct endTime formatting in payload
+- refactor: extract CoreLocationManager into shared module
+- style: restyle timer display with bold font
+
+
+## ✅ Pull Request Guidelines
+
+Each PR must:
+- Focus on a single logical change
+- Include a clear title and description (mention the feature, bug, or refactor)
+- Link to any relevant issues or tasks
+- Pass all build and test checks
+- Include only fully working and tested Swift code (no TODOs or stubs)
+- Follow MVVM and folder structure conventions
+
+Use draft PRs for in-progress work.
+
+## ✅ Summary
+- Clean, modular, scalable SwiftUI architecture
+- Strong MVVM structure with clearly defined layers
+- Commit/PR hygiene enforced via conventions
+- Mobile-first GPS tracking app with local backup and Supabase sync
