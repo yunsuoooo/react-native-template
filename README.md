@@ -4,10 +4,11 @@ This is a React Native template project designed to help you quickly build new a
 
 ## Tech Stack
 
-- React Native (0.79.2)
-- React Native WebView
-- React Native Vector Icons (Feather)
-- NativeWind (TailwindCSS 3)
+- React (19.1.0)
+- React Native (0.80.0)
+- NativeWind (4.1.23) [TailwindCSS 3]
+- Lucide RN Icon
+- Formatting (stylistic/eslint-plugin)
 
 ## Prerequisites
 
@@ -156,16 +157,16 @@ sudo killall -9 xcbuild
 
 ### Using Icons
 
-This template uses `react-native-vector-icons` with the Feather icon set:
+This template uses `lucide react-native icons`:
 
 ```jsx
-import Icon from 'react-native-vector-icons/Feather';
+import { Icon } from '@/shared/ui/icon';
 
 // Example usage
 <Icon name="x" size={24} className="text-zinc-600" />;
 ```
 
-View all available icons at: [Feather Icons](https://oblador.github.io/react-native-vector-icons/#Feather)
+View all available icons at: [Lucide Icons](https://lucide.dev/icons/)
 
 ### Navigation & WebView
 
@@ -196,7 +197,7 @@ For quick implementation, see these examples:
 
 ```jsx
 // Basic WebView usage
-import { WebViewLayout } from '../shared/ui/webview';
+import { WebViewLayout } from '@/shared/ui/webview';
 
 function WebViewScreen() {
   return <WebViewLayout url="https://example.com" />;
